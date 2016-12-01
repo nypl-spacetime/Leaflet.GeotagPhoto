@@ -5,10 +5,12 @@ Example: http://spacetime.nypl.org/Leaflet.PhotoLocation/example
 TODO:
 
 - Better name?
-- Add README with API description and usage examples
+- Add API description and usage examples
+- Add two types: `crosshair` and `camera`
 - Refactor [`field-of-view`](http://github.com/nypl-spacetime/field-of-view) module:
   - Use [Rollup](http://rollupjs.org/) to include [Turf](http://turfjs.org/) functions (currently, plugin includes copy-pasted Turf code :weary:)
 - Use refactored [`field-of-view`](http://github.com/nypl-spacetime/field-of-view) module!
+- Make useable with keyboard
 - Add gradient!
 - Add options:
   - Styling
