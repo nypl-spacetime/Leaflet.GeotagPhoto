@@ -87,9 +87,17 @@ var PhotoLocation = L.FeatureGroup.extend({
 
     this._cameraMarker._setPos = markerSetPos
     this._targetMarker._setPos = markerSetPos
+  },
 
-    L.DomEvent.on(this._cameraMarker, 'keypress', this._onMarkerKeyPress, this)
-    L.DomEvent.on(this._targetMarker, 'keypress', this._onMarkerKeyPress, this)
+  addTo: function (map) {
+    this._map = map
+
+    L.FeatureGroup.prototype.addTo.call(this, map)
+
+    // TODO: remove eventListener when component if removed from map
+    document.addEventListener('keydown', this._onDocumentKeyDown.bind(this))
+
+    return this
   },
 
   _getPointList: function (fieldOfView) {
@@ -193,8 +201,43 @@ var PhotoLocation = L.FeatureGroup.extend({
     this.fire('dragend')
   },
 
-  _onMarkerKeyPress: function (evt) {
-    console.log('ijsdosaidjodijdsaoijd')
+  _moveMarker: function (marker, offset) {
+    var point = this._map.latLngToContainerPoint(marker.getLatLng())
+    point = point.add(offset)
+    var latLng = this._map.containerPointToLatLng(point)
+    marker.setLatLng(latLng)
+
+    this._updateFieldOfView()
+  },
+
+  _onMarkerKeyDown: function (marker, evt) {
+    // TODO: use options
+    var moveDelta = 20
+    if (evt.shiftKey) {
+      moveDelta = moveDelta * 4
+    }
+
+    if (evt.keyCode === 37) {
+      // left
+      this._moveMarker(marker, L.point(-moveDelta, 0))
+    } else if (evt.keyCode === 38) {
+      // up
+      this._moveMarker(marker, L.point(0, -moveDelta))
+    } else if (evt.keyCode === 39) {
+      // right
+      this._moveMarker(marker, L.point(moveDelta, 0))
+    } else if (evt.keyCode === 40) {
+      // down
+      this._moveMarker(marker, L.point(0, moveDelta))
+    }
+  },
+
+  _onDocumentKeyDown: function (evt) {
+    if (document.activeElement === this._cameraMarker._icon) {
+      this._onMarkerKeyDown(this._cameraMarker, evt)
+    } else if (document.activeElement === this._targetMarker._icon) {
+      this._onMarkerKeyDown(this._targetMarker, evt)
+    }
   },
 
   _geoJsonPoint: function(latLng) {
