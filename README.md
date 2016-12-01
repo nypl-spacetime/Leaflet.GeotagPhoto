@@ -1,6 +1,6 @@
 # Leaflet.PhotoLocation
 
-Example: http://spacetime.nypl.org/Leaflet.PhotoLocation.js/example
+Example: http://spacetime.nypl.org/Leaflet.PhotoLocation/example
 
 TODO:
 
