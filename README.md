@@ -1,5 +1,7 @@
 # Leaflet.PhotoLocation
 
+Example: http://spacetime.nypl.org/Leaflet.PhotoLocation.js/example
+
 TODO:
 
 - Better name?
