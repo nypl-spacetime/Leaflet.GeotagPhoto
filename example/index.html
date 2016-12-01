@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Leaflet.PhotoLocation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="../Leaflet.PhotoLocation.css" />
+    <script src="../Leaflet.PhotoLocation.js"></script>
+    <style>
+      body {
+        position: absolute;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        font-size: 16px;
+      }
+
+      #map-container, #map {
+        position: relative;
+        height: 100%;
+        width: 100%;
+      }
+
+      #sidebar {
+        width: 600px;
+        padding: 1em;
+      }
+
+      #slider-container {
+        border-width: 2px;
+        border-color: rgba(0, 0, 0, 0.5);
+        border-style: solid;
+        width: 30%;
+        left: calc(50% - 15%);
+        z-index: 9999;
+        position: absolute;
+        bottom: 10px;
+        margin: 0 auto;
+        background-color: white;
+        padding: .5em 1em;
+        border-radius: 20px;
+      }
+
+      #slider {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      pre {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map-container">
+      <div id="map">
+      </div>
+      <div id="slider-container">
+        <input id="slider" type="range" min="1" max="120" step="1" value="20">
+      </div>
+    </div>
+    <div id="sidebar">
+      <pre><samp id="output">
+      </samp></pre>
+    </div>
+    <script>
+      var map = L.map('map', {
+        center: [52.43369, 6.83442],
+        zoom: 17,
+        minZoom: 6,
+        maxZoom: 18
+      })
+
+      var baseLayer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
+      }).addTo(map)
+
+      var cameraPoint = [6.83442, 52.43369]
+      var targetPoint = [6.83342, 52.43469]
+
+      var points = {
+        type: 'Feature',
+        properties: {
+          angle: 20
+        },
+        geometry: {
+          type: 'GeometryCollection',
+          geometries: [
+            {
+              type: 'Point',
+              coordinates: cameraPoint
+            },
+            {
+              type: 'Point',
+              coordinates: targetPoint
+            }
+          ]
+        }
+      }
+
+      var photoLocation = L.photoLocation('camera', points, {
+
+      }).addTo(map)
+        .on('drag', function (event) {
+          updateSidebar()
+        })
+
+      var outputElement = document.getElementById('output')
+      function updateSidebar() {
+        var fieldOfView = photoLocation.getFieldOfView()
+        outputElement.innerHTML = JSON.stringify(fieldOfView, null, 2)
+      }
+
+      document.getElementById('slider').addEventListener('input', function (event) {
+        photoLocation.setAngle(parseInt(this.value))
+        updateSidebar()
+      })
+
+      updateSidebar()
+    </script>
+  </body>
+</html>

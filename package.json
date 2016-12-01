@@ -1,0 +1,11 @@
+{
+  "name": "Leaflet.PhotoLocation",
+  "version": "0.0.1",
+  "description": "",
+  "main": "Leaflet.PhotoLocation.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Bert Spaan",
+  "license": "MIT"
+}
