@@ -2,13 +2,15 @@
 
 Leaflet plugin for photo geotagging.
 
-Example: http://spacetime.nypl.org/Leaflet.PhotoLocation/example
+Examples:
+
+- http://spacetime.nypl.org/Leaflet.PhotoLocation/examples/crosshair.html
+- http://spacetime.nypl.org/Leaflet.PhotoLocation/examples/camera.html
 
 TODO:
 
 - Better name?
 - Add API description and usage examples
-- Add two types: `crosshair` and `camera`
 - Refactor [`field-of-view`](http://github.com/nypl-spacetime/field-of-view) module:
   - Use [Rollup](http://rollupjs.org/) to include [Turf](http://turfjs.org/) functions (currently, plugin includes copy-pasted Turf code :weary:)
 - Use refactored [`field-of-view`](http://github.com/nypl-spacetime/field-of-view) module!

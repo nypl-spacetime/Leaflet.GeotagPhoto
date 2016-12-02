@@ -1,4 +1,58 @@
-var PhotoLocation = L.FeatureGroup.extend({
+var PhotoLocationCrosshair = L.Evented.extend({
+  options: {
+    element: '<img src="../images/crosshair.svg" width="100px" />'
+  },
+
+  addTo: function (map) {
+    this._map = map
+    var container = map.getContainer()
+    this._element = L.DomUtil.create('div', 'leaflet-photo-location-crosshair', container)
+    this._element.innerHTML = this.options.element
+
+    var _this = this
+
+    this._boundOnInput = this._onInput.bind(this)
+    this._boundOnChange = this._onChange.bind(this)
+
+    this._map.on('move', this._boundOnInput)
+    this._map.on('moveend', this._boundOnChange)
+
+    return this
+  },
+
+  removeFrom: function (map) {
+    if (this._map && this._boundOnInput && this._boundOnChange) {
+      this._map.off('move', this._boundOnInput)
+      this._map.off('moveend', this._boundOnChange)
+    }
+
+    return this
+  },
+
+  _onInput: function () {
+    this.fire('input')
+  },
+
+  _onChange: function () {
+    this.fire('change')
+  },
+
+  getCrosshairLocation: function () {
+    if (this._map) {
+      var center = this._map.getCenter()
+      return {
+        type: 'Point',
+        coordinates: [
+          center.lng,
+          center.lat
+        ]
+      }
+    }
+  }
+
+})
+
+var PhotoLocationCamera = L.FeatureGroup.extend({
 
   options: {
 
@@ -68,14 +122,12 @@ var PhotoLocation = L.FeatureGroup.extend({
       icon: this._cameraIcon,
       draggable: true
     }).on('drag', this._onMarkerDrag, this)
-      .on('dragstart', this._onMarkerDragStart, this)
       .on('dragend', this._onMarkerDragEnd, this)
 
     this._targetMarker = new L.Marker(targetLatLng, {
       icon: this._targetIcon,
       draggable: true
     }).on('drag', this._onMarkerDrag, this)
-      .on('dragstart', this._onMarkerDragStart, this)
       .on('dragend', this._onMarkerDragEnd, this)
 
     boundUpdateMarkerBearings = this._updateMarkerBearings.bind(this)
@@ -85,8 +137,7 @@ var PhotoLocation = L.FeatureGroup.extend({
       boundUpdateMarkerBearings()
     }
 
-    this._cameraMarker._setPos = markerSetPos
-    this._targetMarker._setPos = markerSetPos
+    this._cameraMarker._setPos = this._targetMarker._setPos = markerSetPos
   },
 
   addTo: function (map) {
@@ -94,8 +145,22 @@ var PhotoLocation = L.FeatureGroup.extend({
 
     L.FeatureGroup.prototype.addTo.call(this, map)
 
-    // TODO: remove eventListener when component if removed from map
-    document.addEventListener('keydown', this._onDocumentKeyDown.bind(this))
+    this._boundOnDocumentKeyDown = this._onDocumentKeyDown.bind(this)
+    document.addEventListener('keydown', this._boundOnDocumentKeyDown)
+
+    // map.on('keypress', function (evt) {
+    //   console.log('map.keypress')
+    // })
+
+    return this
+  },
+
+  removeFrom: function (map) {
+    L.FeatureGroup.prototype.removeFrom.call(this, map)
+
+    if (this._boundOnDocumentKeyDown) {
+      document.removeEventListener('keydown', this._boundOnDocumentKeyDown)
+    }
 
     return this
   },
@@ -188,17 +253,13 @@ var PhotoLocation = L.FeatureGroup.extend({
     }
   },
 
-  _onMarkerDragStart: function (evt) {
-    this.fire('dragstart')
-  },
-
   _onMarkerDrag: function (evt) {
     this._updateFieldOfView()
-    this.fire('drag')
+    this.fire('input')
   },
 
   _onMarkerDragEnd: function (evt) {
-    this.fire('dragend')
+    this.fire('change')
   },
 
   _moveMarker: function (marker, offset) {
@@ -208,6 +269,7 @@ var PhotoLocation = L.FeatureGroup.extend({
     marker.setLatLng(latLng)
 
     this._updateFieldOfView()
+    this.fire('input')
   },
 
   _onMarkerKeyDown: function (marker, evt) {
@@ -267,8 +329,14 @@ var PhotoLocation = L.FeatureGroup.extend({
 })
 
 L.photoLocation = function (type, geometry, options) {
-  // two types: crosshair + camera
-  return new PhotoLocation(geometry, options)
+  if (type === 'crosshair') {
+    options = geometry
+    return new PhotoLocationCrosshair(options)
+  } else if (type === 'camera') {
+    return new PhotoLocationCamera(geometry, options)
+  } else {
+    throw new Error('type must be either crosshair or camera')
+  }
 }
 
 // ======================================================================

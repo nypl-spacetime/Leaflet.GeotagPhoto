@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Crosshair - Leaflet.PhotoLocation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="../Leaflet.PhotoLocation.css" />
+    <script src="../Leaflet.PhotoLocation.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <style>
+      body {
+        position: absolute;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        font-size: 16px;
+        font-family: monospace;
+      }
+
+      body > * {
+        min-width: 200px;
+      }
+
+      h1 {
+        font-size: 1.5em;
+        margin-top: 0;
+      }
+
+      h2 {
+        font-size: 1em;
+      }
+
+      #map-container, #map {
+        position: relative;
+        height: 100%;
+        width: 100%;
+      }
+
+      #sidebar {
+        width: 600px;
+        padding: 1em;
+        overflow: auto;
+      }
+
+      pre {
+        margin: 0;
+      }
+
+      #sidebar, .hljs {
+        background-color: #fafafa;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map-container">
+      <div id="map">
+      </div>
+    </div>
+    <div id="sidebar">
+      <h1>Leaflet.PhotoLocation</h1>
+      <h2>Crosshair module</h2>
+      <p>
+        Leaflet plugin for photo geotagging. See <a href="https://github.com/nypl-spacetime/Leaflet.PhotoLocation">GitHub</a> for details.
+      </p>
+      <h2>Output:</h2>
+      <pre><samp id="output">
+      </samp></pre>
+    </div>
+    <script>
+      var map = L.map('map', {
+        center: [52.43369, 6.83442],
+        zoom: 17,
+        minZoom: 6,
+        maxZoom: 18
+      })
+
+      var baseLayer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
+      }).addTo(map)
+
+      var photoLocation = L.photoLocation('crosshair', {
+
+      }).addTo(map)
+        .on('input', function (event) {
+          updateSidebar()
+        })
+
+      var outputElement = document.getElementById('output')
+      function updateSidebar() {
+        var location = photoLocation.getCrosshairLocation()
+        outputElement.innerHTML = JSON.stringify(location, null, 2)
+        hljs.highlightBlock(outputElement)
+      }
+
+      updateSidebar()
+    </script>
+  </body>
+</html>

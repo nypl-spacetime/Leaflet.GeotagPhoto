@@ -2,12 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Leaflet.PhotoLocation</title>
+    <title>Camera - Leaflet.PhotoLocation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
     <link rel="stylesheet" href="../Leaflet.PhotoLocation.css" />
     <script src="../Leaflet.PhotoLocation.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
     <style>
       body {
         position: absolute;
@@ -18,6 +20,20 @@
 
         display: flex;
         font-size: 16px;
+        font-family: monospace;
+      }
+
+      body > * {
+        min-width: 200px;
+      }
+
+      h1 {
+        font-size: 1.5em;
+        margin-top: 0;
+      }
+
+      h2 {
+        font-size: 1em;
       }
 
       #map-container, #map {
@@ -29,6 +45,7 @@
       #sidebar {
         width: 600px;
         padding: 1em;
+        overflow: auto;
       }
 
       #slider-container {
@@ -44,16 +61,26 @@
         background-color: white;
         padding: .5em 1em;
         border-radius: 20px;
+        display: flex;
       }
 
       #slider {
-        width: 100%;
-        margin: 0;
+        margin: 0 1em;
         padding: 0;
+        width: 100%;
+      }
+
+      #angle {
+        text-align: right;
+        width: 4.5em;
       }
 
       pre {
         margin: 0;
+      }
+
+      #sidebar, .hljs {
+        background-color: #fafafa;
       }
     </style>
   </head>
@@ -62,10 +89,18 @@
       <div id="map">
       </div>
       <div id="slider-container">
+        <label for="slider">Angle:</label>
         <input id="slider" type="range" min="1" max="120" step="1" value="20">
+        <span id="angle"></span>
       </div>
     </div>
     <div id="sidebar">
+      <h1>Leaflet.PhotoLocation</h1>
+      <h2>Camera module</h2>
+      <p>
+        Leaflet plugin for photo geotagging. See <a href="https://github.com/nypl-spacetime/Leaflet.PhotoLocation">GitHub</a> for details.
+      </p>
+      <h2>Output:</h2>
       <pre><samp id="output">
       </samp></pre>
     </div>
@@ -107,7 +142,7 @@
       var photoLocation = L.photoLocation('camera', points, {
 
       }).addTo(map)
-        .on('drag', function (event) {
+        .on('input', function (event) {
           updateSidebar()
         })
 
@@ -115,14 +150,23 @@
       function updateSidebar() {
         var fieldOfView = photoLocation.getFieldOfView()
         outputElement.innerHTML = JSON.stringify(fieldOfView, null, 2)
+        hljs.highlightBlock(outputElement)
       }
 
-      document.getElementById('slider').addEventListener('input', function (event) {
-        photoLocation.setAngle(parseInt(this.value))
+      var slider = document.getElementById('slider')
+      var angleText = document.getElementById('angle')
+
+      function updateAngle() {
+        var angle = parseInt(slider.value)
+        photoLocation.setAngle(angle)
+        angleText.innerHTML = angle + '°'
         updateSidebar()
-      })
+      }
+
+      slider.addEventListener('input', updateAngle)
 
       updateSidebar()
+      updateAngle()
     </script>
   </body>
 </html>
