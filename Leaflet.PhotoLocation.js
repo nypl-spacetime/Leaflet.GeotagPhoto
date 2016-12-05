@@ -38,12 +38,12 @@ var PhotoLocationCrosshair = L.Evented.extend({
   },
 
   getCrosshairLatLng: function () {
-    this._map.getCenter()
+    return this._map.getCenter()
   },
 
   getCrosshairPoint: function () {
     if (this._map) {
-      var center = this._getCrosshairLatLng()
+      var center = this.getCrosshairLatLng()
       return {
         type: 'Point',
         coordinates: [
