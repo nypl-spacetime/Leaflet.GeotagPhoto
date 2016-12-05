@@ -2,11 +2,6 @@
 
 Leaflet plugin for photo geotagging.
 
-Examples:
-
-- http://spacetime.nypl.org/Leaflet.PhotoLocation/examples/crosshair.html
-- http://spacetime.nypl.org/Leaflet.PhotoLocation/examples/camera.html
-
 TODO:
 
 - Better name?
@@ -21,4 +16,23 @@ TODO:
   - Etc.
 - Turn this list into GitHub issues!
 
+## Examples
 
+- Crosshair: http://spacetime.nypl.org/Leaflet.PhotoLocation/examples/crosshair.html
+- Camera: http://spacetime.nypl.org/Leaflet.PhotoLocation/examples/camera.html
+
+## Usage
+
+## Modules
+
+### Crosshair
+
+#### API
+
+#### Options
+
+### Camera
+
+#### API
+
+#### Options

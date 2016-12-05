@@ -11,3 +11,9 @@
   z-index: 999;
 }
 
+.leaflet-control-camera,
+.leaflet-control-crosshair {
+  width: 100%;
+  padding: 3px;
+  box-sizing: border-box;
+}

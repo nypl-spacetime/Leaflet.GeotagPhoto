@@ -93,7 +93,7 @@
 
       var outputElement = document.getElementById('output')
       function updateSidebar() {
-        var location = photoLocation.getCrosshairLocation()
+        var location = photoLocation.getCrosshairPoint()
         outputElement.innerHTML = JSON.stringify(location, null, 2)
         hljs.highlightBlock(outputElement)
       }

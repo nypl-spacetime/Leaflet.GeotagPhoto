@@ -142,6 +142,9 @@
       var photoLocation = L.photoLocation('camera', points, {
 
       }).addTo(map)
+        .on('change', function (event) {
+          updateSidebar()
+        })
         .on('input', function (event) {
           updateSidebar()
         })

@@ -37,9 +37,13 @@ var PhotoLocationCrosshair = L.Evented.extend({
     this.fire('change')
   },
 
-  getCrosshairLocation: function () {
+  getCrosshairLatLng: function () {
+    this._map.getCenter()
+  },
+
+  getCrosshairPoint: function () {
     if (this._map) {
-      var center = this._map.getCenter()
+      var center = this._getCrosshairLatLng()
       return {
         type: 'Point',
         coordinates: [
@@ -51,6 +55,91 @@ var PhotoLocationCrosshair = L.Evented.extend({
   }
 
 })
+
+var PhotoLocationCameraControl = L.Control.extend({
+  options: {
+    position: 'topleft'
+  },
+
+  initialize: function(photoLocationCamera) {
+    this._photoLocationCamera = photoLocationCamera
+  },
+
+  onAdd: function (map) {
+    this._map = map
+
+    var controlName = 'leaflet-control-'
+    var container = L.DomUtil.create('div', controlName + ' leaflet-bar')
+    var options = this.options
+
+    var cameraImg = '<img src="../images/camera-icon.svg" />'
+    var crosshairImg = '<img src="../images/crosshair-icon.svg" />'
+
+    this._cameraButton  = this._createButton(cameraImg, 'Move camera back to map (C)',
+      controlName + 'camera', container, this._centerCamera)
+
+    this._crosshairButton  = this._createButton(crosshairImg, 'Move map back to camera (M)',
+      controlName + 'crosshair', container, this._centerMap)
+
+    this._boundMapKeyPress = this._mapKeyPress.bind(this)
+    this._map.on('keypress', this._boundMapKeyPress)
+
+    return container
+  },
+
+  _createButton: function (html, title, className, container, fn) {
+    var link = L.DomUtil.create('a', className, container)
+    link.innerHTML = html
+    link.href = '#'
+    link.title = title
+
+    /*
+     * Will force screen readers like VoiceOver to read this as "Zoom in - button"
+     */
+    link.setAttribute('role', 'button');
+    link.setAttribute('aria-label', title)
+
+    L.DomEvent
+      .on(link, 'mousedown dblclick', L.DomEvent.stopPropagation)
+      .on(link, 'click', L.DomEvent.stop)
+      .on(link, 'click', fn, this)
+      .on(link, 'click', this._refocusOnMap, this)
+
+    return link
+  },
+
+  onRemove: function (map) {
+    L.DomUtil.remove(this._element)
+    map.off('keypress', this._boundMapKeyPress)
+  },
+
+  _mapKeyPress: function (evt) {
+    if (evt.originalEvent.charCode === 99) {
+      // C
+     this._centerCamera()
+    } else if (evt.originalEvent.charCode === 109) {
+      // M
+      this._centerMap()
+    }
+  },
+
+  _centerCamera: function () {
+    if (this._map && this._photoLocationCamera) {
+      this._photoLocationCamera.fitBounds(this._map.getBounds())
+    }
+  },
+
+  _centerMap: function () {
+    if (this._map && this._photoLocationCamera) {
+      this._map.fitBounds(this._photoLocationCamera.getBounds())
+    }
+  }
+
+})
+
+L.photoLocationCameraControl = function (photoLocationCamera) {
+  return new PhotoLocationCameraControl(photoLocationCamera)
+}
 
 var PhotoLocationCamera = L.FeatureGroup.extend({
 
@@ -86,25 +175,23 @@ var PhotoLocationCamera = L.FeatureGroup.extend({
     var cameraSvg = '../images/camera.svg'
     var targetSvg = '../images/target.svg'
 
-    this._cameraIcon = new L.Icon({
+    this._cameraIcon = L.icon({
       iconUrl: cameraSvg,
       iconSize: [38, 38],
       iconAnchor: [19, 19]
     })
 
-    this._targetIcon = new L.Icon({
+    this._targetIcon = L.icon({
       iconUrl: targetSvg,
       iconSize: [180, 32],
       iconAnchor: [90, 16]
     })
 
-    // ayer.setRotationOrigin('13px 13px');
-
     var pointList = this._getPointList(this._fieldOfView)
-    var cameraLatLng = this._getCameraLatLng(pointList)
-    var targetLatLng = this._getTargetLatLng(pointList)
+    var cameraLatLng = this._getCameraFromPointList(pointList)
+    var targetLatLng = this._getTargetFromPointList(pointList)
 
-    this._polyline = new L.Polyline(pointList, {
+    this._polyline = L.polyline(pointList, {
       color: 'black',
       opacity: 0.5,
       weight: 2,
@@ -118,13 +205,15 @@ var PhotoLocationCamera = L.FeatureGroup.extend({
       className: 'field-of-view'
     })
 
-    this._cameraMarker = new L.Marker(cameraLatLng, {
+    this._control = L.photoLocationCameraControl(this)
+
+    this._cameraMarker = L.marker(cameraLatLng, {
       icon: this._cameraIcon,
       draggable: true
     }).on('drag', this._onMarkerDrag, this)
       .on('dragend', this._onMarkerDragEnd, this)
 
-    this._targetMarker = new L.Marker(targetLatLng, {
+    this._targetMarker = L.marker(targetLatLng, {
       icon: this._targetIcon,
       draggable: true
     }).on('drag', this._onMarkerDrag, this)
@@ -145,12 +234,10 @@ var PhotoLocationCamera = L.FeatureGroup.extend({
 
     L.FeatureGroup.prototype.addTo.call(this, map)
 
+    this._control.addTo(map)
+
     this._boundOnDocumentKeyDown = this._onDocumentKeyDown.bind(this)
     document.addEventListener('keydown', this._boundOnDocumentKeyDown)
-
-    // map.on('keypress', function (evt) {
-    //   console.log('map.keypress')
-    // })
 
     return this
   },
@@ -182,14 +269,14 @@ var PhotoLocationCamera = L.FeatureGroup.extend({
     ];
   },
 
-  _getCameraLatLng: function (pointList) {
+  _getCameraFromPointList: function (pointList) {
     return [
       (pointList[0][0] + pointList[2][0]) / 2,
       (pointList[0][1] + pointList[2][1]) / 2,
     ]
   },
 
-  _getTargetLatLng: function (pointList) {
+  _getTargetFromPointList: function (pointList) {
     return pointList[1]
   },
 
@@ -313,12 +400,91 @@ var PhotoLocationCamera = L.FeatureGroup.extend({
     return this._fieldOfView
   },
 
-  getCameraLocation: function () {
-    return this._geoJsonPoint(this._cameraMarker.getLatLng())
+  getCameraLatLng: function () {
+    return this._cameraMarker.getLatLng()
   },
 
-  getTargetLocation: function () {
-    return this._geoJsonPoint(this._targetMarker.getLatLng())
+  getTargetLatLng: function () {
+    return this._targetMarker.getLatLng()
+  },
+
+  getCameraPoint: function () {
+    return this._geoJsonPoint(this.getCameraLatLng())
+  },
+
+  getTargetPoint: function () {
+    return this._geoJsonPoint(this.getTargetLatLng())
+  },
+
+  getCenter: function () {
+    return L.latLngBounds([
+      this.getCameraLatLng(),
+      this.getTargetLatLng()
+    ]).getCenter()
+  },
+
+  fitBounds: function (bounds) {
+    var cameraBounds = this.getBounds()
+
+    if (!bounds.contains(cameraBounds)) {
+      var center = this.getCenter()
+      var cameraLatLng = this.getCameraLatLng()
+      var targetLatLng = this.getTargetLatLng()
+
+      var boundsCenter = bounds.getCenter()
+
+      var newCameraLatLng = [
+        boundsCenter.lat - (center.lat - cameraLatLng.lat),
+        boundsCenter.lng - (center.lng - cameraLatLng.lng)
+      ]
+
+      var newTargetLatLng = [
+        boundsCenter.lat - (center.lat - targetLatLng.lat),
+        boundsCenter.lng - (center.lng - targetLatLng.lng)
+      ]
+
+      this.setCameraAndTargetLatLng(newCameraLatLng, newTargetLatLng)
+    }
+  },
+
+  setCameraLatLng: function (latLng) {
+    if (!this._cameraMarker) {
+      return
+    }
+
+    this._cameraMarker.setLatLng(latLng)
+    this._updateFieldOfView()
+    this.fire('change')
+  },
+
+  setTargetLatLng: function (latLng) {
+    if (!this._targetMarker) {
+      return
+    }
+
+    this._targetMarker.setLatLng(latLng)
+    this._updateFieldOfView()
+    this.fire('change')
+  },
+
+  setCameraAndTargetLatLng: function (cameraLatLng, targetLatLng) {
+    if (!this._cameraMarker || !this._targetMarker) {
+      return
+    }
+
+    this._cameraMarker.setLatLng(cameraLatLng)
+    this._targetMarker.setLatLng(targetLatLng)
+    this._updateFieldOfView()
+    this.fire('change')
+  },
+
+  getBounds: function () {
+    if (!this._fieldOfView) {
+      return
+    }
+
+    var pointList = this._getPointList(this._fieldOfView)
+    return L.latLngBounds(pointList)
   },
 
   setAngle: function (angle) {
