@@ -1,4 +1,4 @@
-var PhotoLocationCrosshair = L.Evented.extend({
+var GeotagPhotoCrosshair = L.Evented.extend({
   options: {
     element: '<img src="../images/crosshair.svg" width="100px" />'
   },
@@ -6,7 +6,7 @@ var PhotoLocationCrosshair = L.Evented.extend({
   addTo: function (map) {
     this._map = map
     var container = map.getContainer()
-    this._element = L.DomUtil.create('div', 'leaflet-photo-location-crosshair', container)
+    this._element = L.DomUtil.create('div', 'leaflet-geotag-photo-crosshair', container)
     this._element.innerHTML = this.options.element
 
     var _this = this
@@ -56,19 +56,19 @@ var PhotoLocationCrosshair = L.Evented.extend({
 
 })
 
-var PhotoLocationCameraControl = L.Control.extend({
+var GeotagPhotoCameraControl = L.Control.extend({
   options: {
     position: 'topleft'
   },
 
-  initialize: function(photoLocationCamera) {
-    this._photoLocationCamera = photoLocationCamera
+  initialize: function(geotagPhotoCamera) {
+    this._geotagPhotoCamera = geotagPhotoCamera
   },
 
   onAdd: function (map) {
     this._map = map
 
-    var controlName = 'leaflet-control-'
+    var controlName = 'leaflet-control-geotag-photo-'
     var container = L.DomUtil.create('div', controlName + ' leaflet-bar')
     var options = this.options
 
@@ -124,24 +124,24 @@ var PhotoLocationCameraControl = L.Control.extend({
   },
 
   _centerCamera: function () {
-    if (this._map && this._photoLocationCamera) {
-      this._photoLocationCamera.fitBounds(this._map.getBounds())
+    if (this._map && this._geotagPhotoCamera) {
+      this._geotagPhotoCamera.fitBounds(this._map.getBounds())
     }
   },
 
   _centerMap: function () {
-    if (this._map && this._photoLocationCamera) {
-      this._map.fitBounds(this._photoLocationCamera.getBounds())
+    if (this._map && this._geotagPhotoCamera) {
+      this._map.fitBounds(this._geotagPhotoCamera.getBounds())
     }
   }
 
 })
 
-L.photoLocationCameraControl = function (photoLocationCamera) {
-  return new PhotoLocationCameraControl(photoLocationCamera)
+L.geotagPhotoCameraControl = function (geotagPhotoCamera) {
+  return new GeotagPhotoCameraControl(geotagPhotoCamera)
 }
 
-var PhotoLocationCamera = L.FeatureGroup.extend({
+var GeotagPhotoCamera = L.FeatureGroup.extend({
 
   options: {
 
@@ -205,7 +205,7 @@ var PhotoLocationCamera = L.FeatureGroup.extend({
       className: 'field-of-view'
     })
 
-    this._control = L.photoLocationCameraControl(this)
+    this._control = L.geotagPhotoCameraControl(this)
 
     this._cameraMarker = L.marker(cameraLatLng, {
       icon: this._cameraIcon,
@@ -494,12 +494,12 @@ var PhotoLocationCamera = L.FeatureGroup.extend({
 
 })
 
-L.photoLocation = function (type, geometry, options) {
+L.geotagPhoto = function (type, geometry, options) {
   if (type === 'crosshair') {
     options = geometry
-    return new PhotoLocationCrosshair(options)
+    return new GeotagPhotoCrosshair(options)
   } else if (type === 'camera') {
-    return new PhotoLocationCamera(geometry, options)
+    return new GeotagPhotoCamera(geometry, options)
   } else {
     throw new Error('type must be either crosshair or camera')
   }

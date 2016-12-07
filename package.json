@@ -1,8 +1,8 @@
 {
-  "name": "Leaflet.PhotoLocation",
+  "name": "Leaflet.GeotagPhoto",
   "version": "0.0.1",
   "description": "",
-  "main": "Leaflet.PhotoLocation.js",
+  "main": "Leaflet.GeotagPhoto.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -2,12 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Crosshair - Leaflet.PhotoLocation</title>
+    <title>Crosshair - Leaflet.GeotagPhoto</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="../Leaflet.PhotoLocation.css" />
-    <script src="../Leaflet.PhotoLocation.js"></script>
+    <link rel="stylesheet" href="../Leaflet.GeotagPhoto.css" />
+    <script src="../Leaflet.GeotagPhoto.js"></script>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
     <style>
@@ -23,6 +23,10 @@
         font-family: monospace;
       }
 
+      body, a, a:visited {
+        color: black;
+      }
+
       body > * {
         min-width: 200px;
       }
@@ -34,6 +38,10 @@
 
       h2 {
         font-size: 1em;
+      }
+
+      .light {
+        font-weight: normal;
       }
 
       #map-container, #map {
@@ -63,10 +71,10 @@
       </div>
     </div>
     <div id="sidebar">
-      <h1>Leaflet.PhotoLocation</h1>
-      <h2>Crosshair module</h2>
+      <h1>Leaflet.GeotagPhoto</h1>
+      <h2>Mode: Crosshair <span class="light">(switch to <a href="camera.html">Camera</a>)</span></h2>
       <p>
-        Leaflet plugin for photo geotagging. See <a href="https://github.com/nypl-spacetime/Leaflet.PhotoLocation">GitHub</a> for details.
+        Leaflet plugin for photo geotagging. See <a href="https://github.com/nypl-spacetime/Leaflet.GeotagPhoto">GitHub</a> for details.
       </p>
       <h2>Output:</h2>
       <pre><samp id="output">
@@ -84,7 +92,7 @@
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
       }).addTo(map)
 
-      var photoLocation = L.photoLocation('crosshair', {
+      var geotagPhoto = L.geotagPhoto('crosshair', {
 
       }).addTo(map)
         .on('input', function (event) {
@@ -93,7 +101,7 @@
 
       var outputElement = document.getElementById('output')
       function updateSidebar() {
-        var location = photoLocation.getCrosshairPoint()
+        var location = geotagPhoto.getCrosshairPoint()
         outputElement.innerHTML = JSON.stringify(location, null, 2)
         hljs.highlightBlock(outputElement)
       }

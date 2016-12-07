@@ -2,12 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Camera - Leaflet.PhotoLocation</title>
+    <title>Camera - Leaflet.GeotagPhoto</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="../Leaflet.PhotoLocation.css" />
-    <script src="../Leaflet.PhotoLocation.js"></script>
+    <link rel="stylesheet" href="../Leaflet.GeotagPhoto.css" />
+    <script src="../Leaflet.GeotagPhoto.js"></script>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
     <style>
@@ -23,6 +23,10 @@
         font-family: monospace;
       }
 
+      body, a, a:visited {
+        color: black;
+      }
+
       body > * {
         min-width: 200px;
       }
@@ -34,6 +38,10 @@
 
       h2 {
         font-size: 1em;
+      }
+
+      .light {
+        font-weight: normal;
       }
 
       #map-container, #map {
@@ -95,10 +103,10 @@
       </div>
     </div>
     <div id="sidebar">
-      <h1>Leaflet.PhotoLocation</h1>
-      <h2>Camera module</h2>
+      <h1>Leaflet.GeotagPhoto</h1>
+      <h2>Mode: Camera <span class="light">(switch to <a href="crosshair.html">Crosshair</a>)</span></h2>
       <p>
-        Leaflet plugin for photo geotagging. See <a href="https://github.com/nypl-spacetime/Leaflet.PhotoLocation">GitHub</a> for details.
+        Leaflet plugin for photo geotagging. See <a href="https://github.com/nypl-spacetime/Leaflet.GeotagPhoto">GitHub</a> for details.
       </p>
       <h2>Output:</h2>
       <pre><samp id="output">
@@ -139,7 +147,7 @@
         }
       }
 
-      var photoLocation = L.photoLocation('camera', points, {
+      var geotagPhoto = L.geotagPhoto('camera', points, {
 
       }).addTo(map)
         .on('change', function (event) {
@@ -151,7 +159,7 @@
 
       var outputElement = document.getElementById('output')
       function updateSidebar() {
-        var fieldOfView = photoLocation.getFieldOfView()
+        var fieldOfView = geotagPhoto.getFieldOfView()
         outputElement.innerHTML = JSON.stringify(fieldOfView, null, 2)
         hljs.highlightBlock(outputElement)
       }
@@ -161,7 +169,7 @@
 
       function updateAngle() {
         var angle = parseInt(slider.value)
-        photoLocation.setAngle(angle)
+        geotagPhoto.setAngle(angle)
         angleText.innerHTML = angle + '°'
         updateSidebar()
       }

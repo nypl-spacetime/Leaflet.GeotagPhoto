@@ -1,4 +1,4 @@
-.leaflet-photo-location-crosshair {
+.leaflet-geotag-photo-crosshair {
   position: absolute;
   top: 0;
   width: 100%;
@@ -11,8 +11,8 @@
   z-index: 999;
 }
 
-.leaflet-control-camera,
-.leaflet-control-crosshair {
+.leaflet-control-geotag-photo-camera,
+.leaflet-control-geotag-photo-crosshair {
   width: 100%;
   padding: 3px;
   box-sizing: border-box;
