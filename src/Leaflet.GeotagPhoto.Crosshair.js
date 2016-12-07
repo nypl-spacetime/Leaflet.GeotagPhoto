@@ -1,0 +1,57 @@
+import L from 'Leaflet'
+
+export default L.Evented.extend({
+  options: {
+    element: '<img src="../images/crosshair.svg" width="100px" />'
+  },
+
+  addTo: function (map) {
+    this._map = map
+    var container = map.getContainer()
+    this._element = L.DomUtil.create('div', 'leaflet-geotag-photo-crosshair', container)
+    this._element.innerHTML = this.options.element
+
+    this._boundOnInput = this._onInput.bind(this)
+    this._boundOnChange = this._onChange.bind(this)
+
+    this._map.on('move', this._boundOnInput)
+    this._map.on('moveend', this._boundOnChange)
+
+    return this
+  },
+
+  removeFrom: function (map) {
+    if (this._map && this._boundOnInput && this._boundOnChange) {
+      this._map.off('move', this._boundOnInput)
+      this._map.off('moveend', this._boundOnChange)
+    }
+
+    return this
+  },
+
+  _onInput: function () {
+    this.fire('input')
+  },
+
+  _onChange: function () {
+    this.fire('change')
+  },
+
+  getCrosshairLatLng: function () {
+    return this._map.getCenter()
+  },
+
+  getCrosshairPoint: function () {
+    if (this._map) {
+      var center = this.getCrosshairLatLng()
+      return {
+        type: 'Point',
+        coordinates: [
+          center.lng,
+          center.lat
+        ]
+      }
+    }
+  }
+
+})

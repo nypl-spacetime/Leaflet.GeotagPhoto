@@ -2,7 +2,7 @@ The MIT License (MIT)
 
 Copyright (c) 2016 Bert Spaan
 
-Parts of Leaflet.GeotagPhoto.js copied from http://turfjs.org/
+build/Leaflet.GeotagPhoto.js and build/Leaflet.GeotagPhoto.min.js includes parts of http://turfjs.org/
 
 Copyright (c) 2013 Morgan Herlocker
 

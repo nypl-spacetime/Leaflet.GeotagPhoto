@@ -1,11 +1,35 @@
 {
   "name": "Leaflet.GeotagPhoto",
   "version": "0.0.1",
-  "description": "",
-  "main": "Leaflet.GeotagPhoto.js",
+  "description": "Leaflet plugin for photo geotagging",
+  "main": "build/Leaflet.GeotagPhoto.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nypl-spacetime/Leaflet.GeotagPhoto"
+  },
+  "browser": "build/Leaflet.GeotagPhoto.js",
+  "module": "Leaflet.GeotagPhoto",
+  "jsnext:main": "Leaflet.GeotagPhoto",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pretest": "rimraf build && mkdir build && npm run build",
+    "build": "cp css/* build && ./node_modules/.bin/rollup -c rollup.config.browser.js && ./node_modules/.bin/rollup -c rollup.config.browser.min.js",
+    "test": "npm run lint",
+    "lint": "standard *.js src/*"
   },
   "author": "Bert Spaan",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "babel-preset-es2015-rollup": "^1.2.0",
+    "rimraf": "^2.5.4",
+    "rollup": "^0.36.4",
+    "rollup-plugin-babel": "^2.6.1",
+    "rollup-plugin-commonjs": "^5.0.5",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-uglify": "^1.0.1",
+    "standard": "^8.6.0",
+    "tap": "^8.0.1"
+  },
+  "dependencies": {
+    "leaflet": "^1.0.2"
+  }
 }
