@@ -26,6 +26,10 @@ export default L.Evented.extend({
       this._map.off('moveend', this._boundOnChange)
     }
 
+    if (this._element) {
+      L.DomUtil.remove(this._element)
+    }
+
     return this
   },
 

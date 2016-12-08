@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="../build/Leaflet.GeotagPhoto.css" />
-    <script src="../build/Leaflet.GeotagPhoto.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/Leaflet.GeotagPhoto/dist/Leaflet.GeotagPhoto.css" />
+    <script src="https://unpkg.com/Leaflet.GeotagPhoto/dist/Leaflet.GeotagPhoto.min.js"></script>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
     <style>
@@ -147,7 +147,7 @@
         }
       }
 
-      var geotagPhoto = L.geotagPhoto('camera', points, {
+      var geotagPhotoCamera = L.GeotagPhoto.camera('camera', points, {
 
       }).addTo(map)
         .on('change', function (event) {
@@ -159,7 +159,7 @@
 
       var outputElement = document.getElementById('output')
       function updateSidebar() {
-        var fieldOfView = geotagPhoto.getFieldOfView()
+        var fieldOfView = geotagPhotoCamera.getFieldOfView()
         outputElement.innerHTML = JSON.stringify(fieldOfView, null, 2)
         hljs.highlightBlock(outputElement)
       }
@@ -169,7 +169,7 @@
 
       function updateAngle() {
         var angle = parseInt(slider.value)
-        geotagPhoto.setAngle(angle)
+        geotagPhotoCamera.setAngle(angle)
         angleText.innerHTML = angle + '°'
         updateSidebar()
       }

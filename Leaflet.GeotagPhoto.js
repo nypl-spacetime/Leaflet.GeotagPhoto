@@ -4,13 +4,13 @@ import L from 'Leaflet'
 import GeotagPhotoCrosshair from './src/Leaflet.GeotagPhoto.Crosshair'
 import GeotagPhotoCamera from './src/Leaflet.GeotagPhoto.Camera'
 
-L.geotagPhoto = function (type, geometry, options) {
-  if (type === 'crosshair') {
-    options = geometry
+L.GeotagPhoto = {
+  Crosshair: GeotagPhotoCrosshair,
+  crosshair: function (options) {
     return new GeotagPhotoCrosshair(options)
-  } else if (type === 'camera') {
+  },
+  Camera: GeotagPhotoCamera,
+  camera: function (geometry, options) {
     return new GeotagPhotoCamera(geometry, options)
-  } else {
-    throw new Error('type must be either crosshair or camera')
   }
 }

@@ -4,7 +4,7 @@ import commonjs from 'rollup-plugin-commonjs'
 
 export default {
   entry: 'Leaflet.GeotagPhoto.js',
-  dest: 'build/Leaflet.GeotagPhoto.js',
+  dest: 'dist/Leaflet.GeotagPhoto.js',
   format: 'iife',
   moduleName: 'fieldOfView',
   globals: {
