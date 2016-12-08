@@ -287,7 +287,7 @@ export default L.FeatureGroup.extend({
     ]).getCenter()
   },
 
-  fitBounds: function (bounds) {
+  centerBounds: function (bounds) {
     var cameraBounds = this.getBounds()
 
     if (!bounds.contains(cameraBounds)) {

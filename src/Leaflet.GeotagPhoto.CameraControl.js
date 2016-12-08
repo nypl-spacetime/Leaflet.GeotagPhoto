@@ -68,7 +68,7 @@ export default L.Control.extend({
 
   _centerCamera: function () {
     if (this._map && this._geotagPhotoCamera) {
-      this._geotagPhotoCamera.fitBounds(this._map.getBounds())
+      this._geotagPhotoCamera.centerBounds(this._map.getBounds())
     }
   },
 

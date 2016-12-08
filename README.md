@@ -11,12 +11,57 @@ Examples:
 
 ## Usage
 
+Include the following HTML in your page's `<header>`:
+
 ```html
 <link rel="stylesheet" href="https://unpkg.com/leaflet-geotag-photo/dist/Leaflet.GeotagPhoto.css" />
 <script src="https://unpkg.com/leaflet-geotag-photo/dist/Leaflet.GeotagPhoto.min.js"></script>
 ```
 
-Example:
+## Modes
+
+### `L.GeotagPhoto.Crosshair`
+
+![Crosshair mode](images/crosshair.png)
+
+#### Example
+
+```js
+L.GeotagPhoto.crosshair().addTo(map)
+  .on('input', function (event) {
+    var point = this.getCrosshairPoint()
+  })
+```
+
+#### API
+
+`L.GeotagPhoto.Crosshair` extends [L.Evented](http://leafletjs.com/reference-1.0.0.html#evented).
+
+`addTo (map)`
+
+Add `L.GeotagPhoto.Crosshair` to `map`.
+
+`removeFrom (map)`
+
+Remove `L.GeotagPhoto.Crosshair` from `map`.
+
+`getCrosshairLatLng ()`
+
+Returns crosshair's [`LatLng`](http://leafletjs.com/reference-1.0.0.html#latlng).
+
+`getCrosshairPoint ()`
+
+Returns crosshair's GeoJSON Point.
+
+#### Options
+
+Coming soon.
+
+### L.GeotagPhoto.Camera
+
+![Camera mode](images/camera.png)
+
+#### Example
 
 ```js
 var cameraPoint = [6.83442, 52.43369]
@@ -42,7 +87,7 @@ var points = {
   }
 }
 
-L.GeotagPhoto.camera('camera', points).addTo(map)
+L.GeotagPhoto.camera(points).addTo(map)
   .on('change', function (event) {
     // Get camera field of view
     // See:
@@ -51,31 +96,9 @@ L.GeotagPhoto.camera('camera', points).addTo(map)
   })
 ```
 
-## Modes
-
-### L.GeotagPhoto.Crosshair
-
-L.GeotagPhoto.Crosshair extends [L.Evented](http://leafletjs.com/reference-1.0.0.html#evented).
-
 #### API
-
-`addTo`
-
-`removeFrom`
-
-`getCrosshairLatLng ()`
-
-`getCrosshairPoint ()`
-
-#### Options
-
-Coming soon.
-
-### L.GeotagPhoto.Camera
 
 L.GeotagPhoto.Camera extends [L.FeatureGroup](http://leafletjs.com/reference-1.0.0.html#featuregroup).
-
-#### API
 
 `getFieldOfView ()`
 
@@ -83,28 +106,54 @@ Returns field of view of camera; see https://github.com/nypl-spacetime/field-of-
 
 `getCameraLatLng ()`
 
+Returns camera's [`LatLng`](http://leafletjs.com/reference-1.0.0.html#latlng).
+
 `getTargetLatLng ()`
+
+Returns target's [`LatLng`](http://leafletjs.com/reference-1.0.0.html#latlng).
 
 `getCameraPoint ()`
 
+Returns camera's GeoJSON Point.
+
 `getTargetPoint ()`
+
+Returns target's GeoJSON Point.
 
 `getCenter ()`
 
+Returns [`LatLng`](http://leafletjs.com/reference-1.0.0.html#latlng) of point halfway camera and target.
+
 `getBounds ()`
 
-`fitBounds (bounds)`
+Returns [`LatLngBounds`](http://leafletjs.com/reference-1.0.0.html#latlngbounds) of field of view triangle.
+
+`centerBounds (bounds)`
+
+Moves camera and target so that their center lies in the middle of `bounds`.
 
 `setCameraLatLng (latLng)`
 
-`setTargetLatLng (latLng)`
-
 `setAngle (angle)`
 
+Set angle of view.
+
+Set `LatLng` of camera.
+
+`setTargetLatLng (latLng)`
+
+Set `LatLng` of target.
+
 `setCameraAndTargetLatLng (cameraLatLng, targetLatLng)`
+
+Set `LatLng` of camera and `LatLng` of target.
 
 #### Options
 
 Coming soon.
 
 #### Keyboard navigation
+
+- Use `tab` to switch between map, camera and target
+- Press `C` to move camera to center of current map view
+- Press `M` to center map on current camera position

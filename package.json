@@ -1,6 +1,6 @@
 {
   "name": "leaflet-geotag-photo",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "Leaflet plugin for photo geotagging",
   "repository": {
     "type": "git",
