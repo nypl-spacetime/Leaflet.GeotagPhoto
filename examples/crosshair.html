@@ -92,7 +92,7 @@
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
       }).addTo(map)
 
-      var geotagPhoto = L.geotagPhoto('crosshair', {
+      var geotagPhotoCrosshair = L.GeotagPhoto.crosshair('crosshair', {
 
       }).addTo(map)
         .on('input', function (event) {
@@ -101,8 +101,8 @@
 
       var outputElement = document.getElementById('output')
       function updateSidebar() {
-        var location = geotagPhoto.getCrosshairPoint()
-        outputElement.innerHTML = JSON.stringify(location, null, 2)
+        var point = geotagPhotoCrosshair.getCrosshairPoint()
+        outputElement.innerHTML = JSON.stringify(point, null, 2)
         hljs.highlightBlock(outputElement)
       }
 
