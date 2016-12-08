@@ -1,19 +1,20 @@
 {
-  "name": "Leaflet.GeotagPhoto",
+  "name": "leaflet-geotag-photo",
   "version": "0.1.0",
   "description": "Leaflet plugin for photo geotagging",
-  "main": "build/Leaflet.GeotagPhoto.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/nypl-spacetime/Leaflet.GeotagPhoto"
   },
   "files": [
-    "dist"
-
+    "dist",
+    "src",
+    "index.js"
   ],
+  "main": "dist/Leaflet.GeotagPhoto.js",
   "browser": "dist/Leaflet.GeotagPhoto.min.js",
-  "module": "Leaflet.GeotagPhoto",
-  "jsnext:main": "Leaflet.GeotagPhoto",
+  "module": "index",
+  "jsnext:main": "index",
   "scripts": {
     "pretest": "rimraf dist && mkdir dist && npm run build",
     "build": "cp css/* dist && ./node_modules/.bin/rollup -c rollup.config.browser.js && ./node_modules/.bin/rollup -c rollup.config.browser.min.js",
@@ -34,6 +35,7 @@
     "tap": "^8.0.1"
   },
   "dependencies": {
+    "field-of-view": "^0.1.3",
     "leaflet": "^1.0.2"
   }
 }

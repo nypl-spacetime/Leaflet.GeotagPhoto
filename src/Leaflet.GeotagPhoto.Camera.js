@@ -1,5 +1,5 @@
 import L from 'Leaflet'
-import * as FieldOfView from 'field-of-view'
+import { fromFeature } from 'field-of-view'
 
 import GeotagPhotoCameraControl from './Leaflet.GeotagPhoto.CameraControl'
 
@@ -16,7 +16,7 @@ export default L.FeatureGroup.extend({
   initialize: function (lineString, options) {
     L.Util.setOptions(this, options)
 
-    this._fieldOfView = FieldOfView.fromFeature(lineString)
+    this._fieldOfView = fromFeature(lineString)
     this._angle = this._fieldOfView.properties.angle
 
     this._targetMarker = null
@@ -197,7 +197,7 @@ export default L.FeatureGroup.extend({
         }
       }
 
-      this._fieldOfView = FieldOfView.fromFeature(cameraTarget)
+      this._fieldOfView = fromFeature(cameraTarget)
 
       this._updateMarkerBearings(this._fieldOfView)
       this._drawFieldOfView(this._fieldOfView)

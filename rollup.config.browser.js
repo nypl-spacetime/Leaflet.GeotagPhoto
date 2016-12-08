@@ -3,18 +3,16 @@ import nodeResolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
 
 export default {
-  entry: 'Leaflet.GeotagPhoto.js',
+  entry: 'index.js',
   dest: 'dist/Leaflet.GeotagPhoto.js',
   format: 'iife',
-  moduleName: 'fieldOfView',
+  moduleName: 'leaflet-geotag-photo',
   globals: {
     Leaflet: 'L'
   },
   plugins: [
     nodeResolve({
       jsnext: true,
-      main: true,
-      browser: true,
       skip: [
         'Leaflet'
       ]

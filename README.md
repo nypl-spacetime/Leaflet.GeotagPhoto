@@ -12,8 +12,8 @@ Examples:
 ## Usage
 
 ```html
-<link rel="stylesheet" href="https://unpkg.com/Leaflet.GeotagPhoto/dist/Leaflet.GeotagPhoto.css" />
-<script src="https://unpkg.com/Leaflet.GeotagPhoto/dist/Leaflet.GeotagPhoto.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-geotag-photo/dist/Leaflet.GeotagPhoto.css" />
+<script src="https://unpkg.com/leaflet-geotag-photo/dist/Leaflet.GeotagPhoto.min.js"></script>
 ```
 
 Example:
