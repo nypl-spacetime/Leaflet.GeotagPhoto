@@ -9,6 +9,8 @@ Examples:
 
 [![Screenshot of camera module](images/screenshot.png)](http://spacetime.nypl.org/Leaflet.GeotagPhoto/examples/camera.html)
 
+Leaflet.GeotagPhoto is developed for The New York Public Library's [NYC Space/Time Directory](http://spacetime.nypl.org/).
+
 ## Usage
 
 Include the following HTML in your page's `<header>`:
@@ -48,7 +50,7 @@ L.GeotagPhoto.crosshair().addTo(map)
 
 Coming soon.
 
-### L.GeotagPhoto.Camera
+### `L.GeotagPhoto.Camera`
 
 ![Camera mode](images/camera.png)
 
@@ -89,7 +91,7 @@ L.GeotagPhoto.camera(points).addTo(map)
 
 #### API
 
-L.GeotagPhoto.Camera extends [L.FeatureGroup](http://leafletjs.com/reference-1.0.0.html#featuregroup).
+`L.GeotagPhoto.Camera` extends [L.FeatureGroup](http://leafletjs.com/reference-1.0.0.html#featuregroup).
 
 | Function                | Description                                     |
 |:------------------------|:------------------------------------------------|
@@ -115,3 +117,10 @@ Coming soon.
 - Use `tab` to switch between map, camera and target
 - Press `C` to move camera to center of current map view
 - Press `M` to center map on current camera position
+
+## See also
+
+- http://spacetime.nypl.org/
+- https://github.com/nypl-spacetime/field-of-view
+- https://github.com/nypl-spacetime/surveyor
+- http://turfjs.org/
