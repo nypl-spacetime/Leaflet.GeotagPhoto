@@ -115,6 +115,7 @@ Coming soon.
 #### Keyboard navigation
 
 - Use `tab` to switch between map, camera and target
+  - Use arrow keys to move map, camera or target
 - Press `C` to move camera to center of current map view
 - Press `M` to center map on current camera position
 
