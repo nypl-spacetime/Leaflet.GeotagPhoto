@@ -37,21 +37,12 @@ L.GeotagPhoto.crosshair().addTo(map)
 
 `L.GeotagPhoto.Crosshair` extends [L.Evented](http://leafletjs.com/reference-1.0.0.html#evented).
 
-`addTo (map)`
-
-Add `L.GeotagPhoto.Crosshair` to `map`.
-
-`removeFrom (map)`
-
-Remove `L.GeotagPhoto.Crosshair` from `map`.
-
-`getCrosshairLatLng ()`
-
-Returns crosshair's [`LatLng`](http://leafletjs.com/reference-1.0.0.html#latlng).
-
-`getCrosshairPoint ()`
-
-Returns crosshair's GeoJSON Point.
+| Function                | Description                                     |
+|-------------------------|------------------------------------------------:|
+| `addTo (map)`           | Add `L.GeotagPhoto.Crosshair` to `map`          |
+| `removeFrom (map)`      | Remove `L.GeotagPhoto.Crosshair` from `map`     |
+| `getCrosshairLatLng ()` | Returns crosshair's [`LatLng`](http://leafletjs.com/reference-1.0.0.html#latlng) |
+| `getCrosshairPoint ()`  | Returns crosshair's GeoJSON Point               |
 
 #### Options
 
@@ -100,53 +91,20 @@ L.GeotagPhoto.camera(points).addTo(map)
 
 L.GeotagPhoto.Camera extends [L.FeatureGroup](http://leafletjs.com/reference-1.0.0.html#featuregroup).
 
-`getFieldOfView ()`
-
-Returns field of view of camera; see https://github.com/nypl-spacetime/field-of-view#output
-
-`getCameraLatLng ()`
-
-Returns camera's [`LatLng`](http://leafletjs.com/reference-1.0.0.html#latlng).
-
-`getTargetLatLng ()`
-
-Returns target's [`LatLng`](http://leafletjs.com/reference-1.0.0.html#latlng).
-
-`getCameraPoint ()`
-
-Returns camera's GeoJSON Point.
-
-`getTargetPoint ()`
-
-Returns target's GeoJSON Point.
-
-`getCenter ()`
-
-Returns [`LatLng`](http://leafletjs.com/reference-1.0.0.html#latlng) of point halfway camera and target.
-
-`getBounds ()`
-
-Returns [`LatLngBounds`](http://leafletjs.com/reference-1.0.0.html#latlngbounds) of field of view triangle.
-
-`centerBounds (bounds)`
-
-Moves camera and target so that their center lies in the middle of `bounds`.
-
-`setCameraLatLng (latLng)`
-
-`setAngle (angle)`
-
-Set angle of view.
-
-Set `LatLng` of camera.
-
-`setTargetLatLng (latLng)`
-
-Set `LatLng` of target.
-
-`setCameraAndTargetLatLng (cameraLatLng, targetLatLng)`
-
-Set `LatLng` of camera and `LatLng` of target.
+| Function                | Description                                     |
+|-------------------------|------------------------------------------------:|
+| `getFieldOfView ()`     | Returns [field of view of camera](https://github.com/nypl-spacetime/field-of-view#output) |
+| `getCameraLatLng ()`    | Returns camera's [`LatLng`](http://leafletjs.com/reference-1.0.0.html#latlng) |
+| `getTargetLatLng ()`    | Returns target's [`LatLng`](http://leafletjs.com/reference-1.0.0.html#latlng) |
+| `getCameraPoint ()`     | Returns camera's GeoJSON Point                  |
+| `getTargetPoint ()`     | Returns target's GeoJSON Point                  |
+| `getCenter ()`          | Returns [`LatLng`](http://leafletjs.com/reference-1.0.0.html#latlng) of point halfway camera and target |
+| `getBounds ()` | Returns [`LatLngBounds`](http://leafletjs.com/reference-1.0.0.html#latlngbounds) of field of view triangle |
+| `centerBounds (bounds)` | Moves camera and target so that their center lies in the middle of `bounds` |
+| `setAngle (angle)`      | Set angle of view                               |
+| `setCameraLatLng (latLng)` | Set `LatLng` of camera
+| `setTargetLatLng (latLng)` | Set `LatLng` of target                       |
+| `setCameraAndTargetLatLng (cameraLatLng, targetLatLng)` | Set `LatLng` of camera and `LatLng` of target |
 
 #### Options
 
