@@ -13,7 +13,7 @@ Leaflet.GeotagPhoto is developed for The New York Public Library's [NYC Space/Ti
 
 ## Usage
 
-Include the following HTML in your page's `<header>`:
+Include the following HTML in your page's `<head>` tag:
 
 ```html
 <link rel="stylesheet" href="https://unpkg.com/leaflet-geotag-photo/dist/Leaflet.GeotagPhoto.css" />
