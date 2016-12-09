@@ -9,7 +9,7 @@ Examples:
 
 [![Screenshot of camera module](images/screenshot.png)](http://spacetime.nypl.org/Leaflet.GeotagPhoto/examples/camera.html)
 
-Leaflet.GeotagPhoto is developed for The New York Public Library's [NYC Space/Time Directory](http://spacetime.nypl.org/).
+Leaflet.GeotagPhoto is part of The New York Public Library's [NYC Space/Time Directory](http://spacetime.nypl.org/).
 
 ## Usage
 
