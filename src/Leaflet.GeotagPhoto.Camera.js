@@ -13,10 +13,10 @@ export default L.FeatureGroup.extend({
 
   },
 
-  initialize: function (lineString, options) {
+  initialize: function (feature, options) {
     L.Util.setOptions(this, options)
 
-    this._fieldOfView = fromFeature(lineString)
+    this._fieldOfView = fromFeature(feature)
     this._angle = this._fieldOfView.properties.angle
 
     this._targetMarker = null
@@ -134,14 +134,14 @@ export default L.FeatureGroup.extend({
   },
 
   _getCameraFromPointList: function (pointList) {
+    return pointList[1]
+  },
+
+  _getTargetFromPointList: function (pointList) {
     return [
       (pointList[0][0] + pointList[2][0]) / 2,
       (pointList[0][1] + pointList[2][1]) / 2
     ]
-  },
-
-  _getTargetFromPointList: function (pointList) {
-    return pointList[1]
   },
 
   _addRotateTransform: function (element, rotation) {

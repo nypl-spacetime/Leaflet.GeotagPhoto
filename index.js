@@ -10,7 +10,7 @@ L.GeotagPhoto = {
     return new GeotagPhotoCrosshair(options)
   },
   Camera: GeotagPhotoCamera,
-  camera: function (geometry, options) {
-    return new GeotagPhotoCamera(geometry, options)
+  camera: function (feature, options) {
+    return new GeotagPhotoCamera(feature, options)
   }
 }
