@@ -83,7 +83,11 @@ var points = {
   }
 }
 
-L.GeotagPhoto.camera(points).addTo(map)
+var options = {
+  draggable: true
+}
+
+L.GeotagPhoto.camera(points, options).addTo(map)
   .on('change', function (event) {
     // Get camera field of view
     // See:
