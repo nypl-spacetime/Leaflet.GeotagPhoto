@@ -2,7 +2,7 @@ import L from 'Leaflet'
 
 export default L.Evented.extend({
   options: {
-    element: '<img src="../images/crosshair.svg" width="100px" />'
+    crosshairHTML: '<img src="../images/crosshair.svg" width="100px" />'
   },
 
   initialize: function (options) {
@@ -17,7 +17,7 @@ export default L.Evented.extend({
     this._map = map
     var container = map.getContainer()
     this._element = L.DomUtil.create('div', 'leaflet-geotag-photo-crosshair', container)
-    this._element.innerHTML = this.options.element
+    this._element.innerHTML = this.options.crosshairHTML
 
     this._boundOnInput = this._onInput.bind(this)
     this._boundOnChange = this._onChange.bind(this)

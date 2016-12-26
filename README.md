@@ -49,9 +49,9 @@ L.GeotagPhoto.crosshair().addTo(map)
 
 #### Options
 
-| Option    | Type          | Default                                               | Description
-|:----------|:--------------|:------------------------------------------------------|:-------------|
-| `element` | `HTML String` | `<img src="../images/crosshair.svg" width="100px" />` | HTML string of crosshair element |
+| Option          | Type          | Default                                               | Description
+|:----------------|:--------------|:------------------------------------------------------|:-------------|
+| `crosshairHTML` | `HTML String` | `<img src="../images/crosshair.svg" width="100px" />` | HTML string of crosshair element |
 
 ### `L.GeotagPhoto.Camera`
 
