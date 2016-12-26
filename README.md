@@ -49,7 +49,9 @@ L.GeotagPhoto.crosshair().addTo(map)
 
 #### Options
 
-Coming soon.
+| Option    | Type          | Default                                               | Description
+|:----------|:--------------|:------------------------------------------------------|:-------------|
+| `element` | `HTML String` | `<img src="../images/crosshair.svg" width="100px" />` | HTML string of crosshair element |
 
 ### `L.GeotagPhoto.Camera`
 
@@ -112,7 +114,47 @@ L.GeotagPhoto.camera(points).addTo(map)
 
 #### Options
 
-Coming soon.
+| Option         | Type      | Default | Description
+|:---------------|:----------|:--------|:----------------------------------------------------------|
+| `draggable`    | `Boolean` | `true`  | Whether the camera is draggable with mouse/touch or not   |
+| `control`      | `Boolean` | `true`  | Whether to show camera control buttons                    |
+| `cameraIcon`   | [`L.Icon`](http://leafletjs.com/reference-1.0.2.html#icon) | See below    | Camera icon
+| `targetIcon`   | [`L.Icon`](http://leafletjs.com/reference-1.0.2.html#icon) | See below    | Target icon
+| `outlineStyle` | [`L.Path options`](http://leafletjs.com/reference-1.0.2.html#path-option) | See below | Style of field-of-view triangle's outline
+| `fillStyle`    | [`L.Path options`](http://leafletjs.com/reference-1.0.2.html#path-option) | See below | Style of field-of-view triangle's fill polygon
+
+##### Defaults
+
+```js
+const defaults = {
+  cameraIcon: L.icon({
+    iconUrl: '../images/camera.svg',
+    iconSize: [38, 38],
+    iconAnchor: [19, 19]
+  }),
+
+  targetIcon: L.icon({
+    iconUrl: '../images/target.svg',
+    iconSize: [180, 32],
+    iconAnchor: [90, 16]
+  }),
+
+  outlineStyle: {
+    color: 'black',
+    opacity: 0.5,
+    weight: 2,
+    dashArray: '5, 7',
+    lineCap: 'round',
+    lineJoin: 'round'
+  },
+
+  fillStyle: {
+    weight: 0,
+    fillOpacity: 0.2,
+    fillColor: '#3388ff'
+  }
+}
+```
 
 #### Keyboard navigation
 

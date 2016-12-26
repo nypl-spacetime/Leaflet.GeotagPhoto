@@ -10,11 +10,46 @@ L.geotagPhotoCameraControl = function (geotagPhotoCamera) {
 export default L.FeatureGroup.extend({
 
   options: {
+    // Whether the camera is draggable with mouse/touch or not
+    draggable: true,
 
+    // Whether to show camera control buttons
+    control: true,
+
+    cameraIcon: L.icon({
+      iconUrl: '../images/camera.svg',
+      iconSize: [38, 38],
+      iconAnchor: [19, 19]
+    }),
+
+    targetIcon: L.icon({
+      iconUrl: '../images/target.svg',
+      iconSize: [180, 32],
+      iconAnchor: [90, 16]
+    }),
+
+    outlineStyle: {
+      color: 'black',
+      opacity: 0.5,
+      weight: 2,
+      dashArray: '5, 7',
+      lineCap: 'round',
+      lineJoin: 'round'
+    },
+
+    fillStyle: {
+      weight: 0,
+      fillOpacity: 0.2,
+      fillColor: '#3388ff'
+    }
   },
 
   initialize: function (feature, options) {
-    L.Util.setOptions(this, options)
+    // Don't know why L.Util.setOptions(this, options) doesn't work
+    //   (like it does in other Leaflet plugins)
+    // `this` seems to be new class of Camera prototype,
+    // and therefore this.hasOwnProperty('options') === false (used in setOptions function)
+    this.options = Object.assign(this.options, options)
 
     this._fieldOfView = fromFeature(feature)
     this._angle = this._fieldOfView.properties.angle
@@ -36,50 +71,29 @@ export default L.FeatureGroup.extend({
   },
 
   _createLayers: function () {
-    var cameraSvg = '../images/camera.svg'
-    var targetSvg = '../images/target.svg'
-
-    this._cameraIcon = L.icon({
-      iconUrl: cameraSvg,
-      iconSize: [38, 38],
-      iconAnchor: [19, 19]
-    })
-
-    this._targetIcon = L.icon({
-      iconUrl: targetSvg,
-      iconSize: [180, 32],
-      iconAnchor: [90, 16]
-    })
+    this._cameraIcon = this.options.cameraIcon
+    this._targetIcon = this.options.targetIcon
 
     var pointList = this._getPointList(this._fieldOfView)
     var cameraLatLng = this._getCameraFromPointList(pointList)
     var targetLatLng = this._getTargetFromPointList(pointList)
 
-    this._polyline = L.polyline(pointList, {
-      color: 'black',
-      opacity: 0.5,
-      weight: 2,
-      dashArray: '5, 7',
-      lineCap: 'round',
-      lineJoin: 'round'
-    })
-
-    this._polygon = L.polygon(pointList, {
-      weight: 0,
+    this._polyline = L.polyline(pointList, this.options.outlineStyle)
+    this._polygon = L.polygon(pointList, Object.assign(this.options.fillStyle, {
       className: 'field-of-view'
-    })
+    }))
 
     this._control = L.geotagPhotoCameraControl(this)
 
     this._cameraMarker = L.marker(cameraLatLng, {
       icon: this._cameraIcon,
-      draggable: true
+      draggable: this.options.draggable
     }).on('drag', this._onMarkerDrag, this)
       .on('dragend', this._onMarkerDragEnd, this)
 
     this._targetMarker = L.marker(targetLatLng, {
       icon: this._targetIcon,
-      draggable: true
+      draggable: this.options.draggable
     }).on('drag', this._onMarkerDrag, this)
       .on('dragend', this._onMarkerDragEnd, this)
 
@@ -98,7 +112,9 @@ export default L.FeatureGroup.extend({
 
     L.FeatureGroup.prototype.addTo.call(this, map)
 
-    this._control.addTo(map)
+    if (this.options.control) {
+      this._control.addTo(map)
+    }
 
     this._boundOnDocumentKeyDown = this._onDocumentKeyDown.bind(this)
     document.addEventListener('keydown', this._boundOnDocumentKeyDown)
@@ -224,7 +240,6 @@ export default L.FeatureGroup.extend({
   },
 
   _onMarkerKeyDown: function (marker, evt) {
-    // TODO: use options
     var moveDelta = 20
     if (evt.shiftKey) {
       moveDelta = moveDelta * 4
