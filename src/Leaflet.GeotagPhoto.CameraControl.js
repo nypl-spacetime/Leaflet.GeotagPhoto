@@ -7,7 +7,7 @@ export default L.Control.extend({
 
   initialize: function (geotagPhotoCamera, options) {
     this._geotagPhotoCamera = geotagPhotoCamera
-    this.options = Object.assign(this.options, options)
+    L.setOptions(this, options)
   },
 
   onAdd: function (map) {

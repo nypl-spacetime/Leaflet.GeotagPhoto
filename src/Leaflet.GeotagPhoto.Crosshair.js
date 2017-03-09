@@ -10,7 +10,8 @@ export default L.Evented.extend({
     //   (like it does in other Leaflet plugins)
     // `this` seems to be new class of Camera prototype,
     // and therefore this.hasOwnProperty('options') === false (used in setOptions function)
-    this.options = Object.assign(this.options, options)
+    // this.options = Object.assign(this.options, options)
+    L.setOptions(this, options)
   },
 
   addTo: function (map) {
