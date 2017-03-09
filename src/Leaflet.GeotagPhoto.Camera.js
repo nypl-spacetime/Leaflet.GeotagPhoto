@@ -3,8 +3,8 @@ import { fromFeature } from 'field-of-view'
 
 import GeotagPhotoCameraControl from './Leaflet.GeotagPhoto.CameraControl'
 
-L.geotagPhotoCameraControl = function (geotagPhotoCamera) {
-  return new GeotagPhotoCameraControl(geotagPhotoCamera)
+L.geotagPhotoCameraControl = function (geotagPhotoCamera, options) {
+  return new GeotagPhotoCameraControl(geotagPhotoCamera, options)
 }
 
 export default L.FeatureGroup.extend({
@@ -15,6 +15,10 @@ export default L.FeatureGroup.extend({
 
     // Whether to show camera control buttons
     control: true,
+
+    // Control button images
+    controlCameraImg: '../images/camera-icon.svg',
+    controlCrosshairImg: '../images/crosshair-icon.svg',
 
     cameraIcon: L.icon({
       iconUrl: '../images/camera.svg',
@@ -83,7 +87,10 @@ export default L.FeatureGroup.extend({
       className: 'field-of-view'
     }))
 
-    this._control = L.geotagPhotoCameraControl(this)
+    this._control = L.geotagPhotoCameraControl(this, {
+      cameraImg: this.options.controlCameraImg,
+      crosshairImg: this.options.controlCrosshairImg
+    })
 
     this._cameraMarker = L.marker(cameraLatLng, {
       icon: this._cameraIcon,

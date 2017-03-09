@@ -5,8 +5,9 @@ export default L.Control.extend({
     position: 'topleft'
   },
 
-  initialize: function (geotagPhotoCamera) {
+  initialize: function (geotagPhotoCamera, options) {
     this._geotagPhotoCamera = geotagPhotoCamera
+    this.options = Object.assign(this.options, options)
   },
 
   onAdd: function (map) {
@@ -15,8 +16,8 @@ export default L.Control.extend({
     var controlName = 'leaflet-control-geotag-photo-'
     var container = L.DomUtil.create('div', controlName + ' leaflet-bar')
 
-    var cameraImg = '<img src="../images/camera-icon.svg" />'
-    var crosshairImg = '<img src="../images/crosshair-icon.svg" />'
+    var cameraImg = '<img src="' + this.options.cameraImg + '" />'
+    var crosshairImg = '<img src="' + this.options.crosshairImg + '" />'
 
     this._cameraButton = this._createButton(cameraImg, 'Move camera back to map (C)',
       controlName + 'camera', container, this._centerCamera)
