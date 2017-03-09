@@ -1,6 +1,6 @@
 {
   "name": "leaflet-geotag-photo",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Leaflet plugin for photo geotagging",
   "repository": {
     "type": "git",
@@ -17,6 +17,7 @@
   "module": "index",
   "jsnext:main": "index",
   "scripts": {
+    "prepublish": "npm run test",
     "pretest": "rimraf dist && mkdir dist && npm run build",
     "build": "cp css/* dist && ./node_modules/.bin/rollup -c rollup.config.browser.js && ./node_modules/.bin/rollup -c rollup.config.browser.min.js",
     "test": "npm run lint",
