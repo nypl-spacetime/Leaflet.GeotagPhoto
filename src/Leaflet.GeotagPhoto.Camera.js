@@ -173,7 +173,7 @@ export default L.FeatureGroup.extend({
 
     element.style.transformOrigin = 'center center'
 
-    if (transform.includes('rotate')) {
+    if (transform.indexOf('rotate') !== -1) {
       element.style[L.DomUtil.TRANSFORM] = transform.replace(/rotate\(.*?\)/, rotate)
     } else {
       element.style[L.DomUtil.TRANSFORM] = transform + ' ' + rotate
