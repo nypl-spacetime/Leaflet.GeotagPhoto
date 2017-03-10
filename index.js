@@ -6,6 +6,7 @@ import GeotagPhotoCamera from './src/Leaflet.GeotagPhoto.Camera'
 
 // Object.assign polyfill, for IE<=11. From:
 //   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#Polyfill
+// TODO: I'm sure Babel can add this polyfill, too.
 if (typeof Object.assign !== 'function') {
   Object.assign = function (target, varArgs) {
     if (target == null) {
