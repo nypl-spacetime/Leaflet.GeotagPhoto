@@ -176,6 +176,9 @@
 
       slider.addEventListener('input', updateAngle)
 
+      // In IE<=11, input event does not work
+      slider.addEventListener('change', updateAngle)
+
       updateSidebar()
       updateAngle()
     </script>
