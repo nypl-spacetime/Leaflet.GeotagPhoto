@@ -114,7 +114,8 @@ L.GeotagPhoto.camera(points, options).addTo(map)
 | `setAngle (angle)`                        | Set angle of view                               |
 | `setCameraLatLng (latLng)`                | Set `LatLng` of camera                          |
 | `setTargetLatLng (latLng)`                | Set `LatLng` of target                          |
-| `setCameraAndTargetLatLng (cameraLatLng, targetLatLng)` | Set `LatLng` of camera and `LatLng` of target | `setDraggable (boolean)`                  | Toggle between static or draggable camera       |
+| `setCameraAndTargetLatLng (cameraLatLng, targetLatLng)` | Set `LatLng` of camera and `LatLng` of target |
+| `setDraggable (boolean)`                  | Toggle between static or draggable camera       |
 
 #### Options
 
