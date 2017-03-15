@@ -372,6 +372,18 @@ export default L.FeatureGroup.extend({
   setAngle: function (angle) {
     this._angle = angle
     this._updateFieldOfView()
+  },
+
+  setDraggable: function (draggable) {
+    if (this._cameraMarker && this._targetMarker) {
+      if (draggable) {
+        this._cameraMarker.dragging.enable()
+        this._targetMarker.dragging.enable()
+      } else {
+        this._cameraMarker.dragging.disable()
+        this._targetMarker.dragging.disable()
+      }
+    }
   }
 
 })
