@@ -127,8 +127,8 @@ L.GeotagPhoto.camera(points, options).addTo(map)
 | `outlineStyle`        | [`L.Path options`](http://leafletjs.com/reference-1.0.2.html#path-option) | See below | Style of field-of-view triangle's outline
 | `fillStyle`           | [`L.Path options`](http://leafletjs.com/reference-1.0.2.html#path-option) | See below | Style of field-of-view triangle's fill polygon
 | `control`             | `Boolean` | `true`  | Whether to show camera control buttons                    |
-| `controlCameraImg`    | `String`  | '../images/camera-icon.svg'    | URL to icon displayed in camera control button
-| `controlCrosshairImg` | `String`  | '../images/crosshair-icon.svg' | URL to icon displayed in crosshair control button
+| `controlCameraImg`    | `String`  | `../images/camera-icon.svg`    | URL to icon displayed in camera control button
+| `controlCrosshairImg` | `String`  | `../images/crosshair-icon.svg` | URL to icon displayed in crosshair control button
 
 ##### Defaults
 
