@@ -90,13 +90,17 @@ export default L.FeatureGroup.extend({
 
     this._cameraMarker = L.marker(cameraLatLng, {
       icon: this._cameraIcon,
-      draggable: this.options.draggable
+      draggable: this.options.draggable,
+      title: 'Camera',
+      alt: 'Location of the camera'
     }).on('drag', this._onMarkerDrag, this)
       .on('dragend', this._onMarkerDragEnd, this)
 
     this._targetMarker = L.marker(targetLatLng, {
       icon: this._targetIcon,
-      draggable: this.options.draggable
+      draggable: this.options.draggable,
+      title: 'Target',
+      alt: 'Location of the target'
     }).on('drag', this._onMarkerDrag, this)
       .on('dragend', this._onMarkerDragEnd, this)
 

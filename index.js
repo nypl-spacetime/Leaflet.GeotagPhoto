@@ -30,13 +30,16 @@ if (typeof Object.assign !== 'function') {
   }
 }
 
-L.GeotagPhoto = {
-  Crosshair: GeotagPhotoCrosshair,
+L.geotagPhoto = {
   crosshair: function (options) {
     return new GeotagPhotoCrosshair(options)
   },
-  Camera: GeotagPhotoCamera,
   camera: function (feature, options) {
     return new GeotagPhotoCamera(feature, options)
   }
+}
+
+L.GeotagPhoto = {
+  Crosshair: GeotagPhotoCrosshair,
+  Camera: GeotagPhotoCamera
 }

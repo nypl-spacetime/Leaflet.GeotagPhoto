@@ -11,6 +11,8 @@ Examples:
 
 Leaflet.GeotagPhoto is part of The New York Public Library's [NYC Space/Time Directory](http://spacetime.nypl.org/).
 
+You can also find Leaflet.GeotagPhoto on [Leaflet's plugin page](http://leafletjs.com/plugins.html).
+
 ## Usage
 
 Include the following HTML in your page's `<head>` tag:
@@ -29,7 +31,7 @@ Include the following HTML in your page's `<head>` tag:
 #### Example
 
 ```js
-L.GeotagPhoto.crosshair().addTo(map)
+L.geotagPhoto.crosshair().addTo(map)
   .on('input', function (event) {
     var point = this.getCrosshairPoint()
   })
@@ -41,7 +43,7 @@ L.GeotagPhoto.crosshair().addTo(map)
 
 | Function                            | Description                                     |
 |:------------------------------------|:------------------------------------------------|
-| `L.GeotagPhoto.crosshair(options?)` | Creation                                        |
+| `L.geotagPhoto.crosshair(options?)` | Creation                                        |
 | `addTo (map)`                       | Add `L.GeotagPhoto.Crosshair` to `map`          |
 | `removeFrom (map)`                  | Remove `L.GeotagPhoto.Crosshair` from `map`     |
 | `getCrosshairLatLng ()`             | Returns crosshair's [`LatLng`](http://leafletjs.com/reference-1.0.0.html#latlng) |
@@ -87,7 +89,7 @@ var options = {
   draggable: true
 }
 
-L.GeotagPhoto.camera(points, options).addTo(map)
+L.geotagPhoto.camera(points, options).addTo(map)
   .on('change', function (event) {
     // Get camera field of view
     // See:
@@ -102,7 +104,7 @@ L.GeotagPhoto.camera(points, options).addTo(map)
 
 | Function                                  | Description                                     |
 |:------------------------------------------|:------------------------------------------------|
-| `L.GeotagPhoto.camera(feature, options?)` | Creation, `feature` is [input for field-of-view](https://github.com/nypl-spacetime/field-of-view#input) |
+| `L.geotagPhoto.camera(feature, options?)` | Creation, `feature` is [input for field-of-view](https://github.com/nypl-spacetime/field-of-view#input) |
 | `getFieldOfView ()`                       | Returns [field of view of camera](https://github.com/nypl-spacetime/field-of-view#output) |
 | `getCameraLatLng ()`                      | Returns camera's [`LatLng`](http://leafletjs.com/reference-1.0.0.html#latlng) |
 | `getTargetLatLng ()`                      | Returns target's [`LatLng`](http://leafletjs.com/reference-1.0.0.html#latlng) |
@@ -169,6 +171,18 @@ const defaults = {
   - Use arrow keys to move map, camera or target
 - Press `C` to move camera to center of current map view
 - Press `M` to center map on current camera position
+
+## Building & Publishing
+
+To build the plugin, run:
+
+    npm run build
+
+The resulting files will be available in the `dist` directory.
+
+To publish the plugin to [npm](https://www.npmjs.com/package/leaflet-geotag-photo) and [unpkg.com](https://unpkg.com/leaflet-geotag-photo), run:
+
+    npm publish
 
 ## See also
 

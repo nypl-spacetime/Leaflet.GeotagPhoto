@@ -16,8 +16,8 @@ export default L.Control.extend({
     var controlName = 'leaflet-control-geotag-photo-'
     var container = L.DomUtil.create('div', controlName + ' leaflet-bar')
 
-    var cameraImg = '<img src="' + this.options.cameraImg + '" />'
-    var crosshairImg = '<img src="' + this.options.crosshairImg + '" />'
+    var cameraImg = '<img role="none" src="' + this.options.cameraImg + '" />'
+    var crosshairImg = '<img role="none" src="' + this.options.crosshairImg + '" />'
 
     this._cameraButton = this._createButton(cameraImg, 'Move camera back to map (C)',
       controlName + 'camera', container, this._centerCamera)
