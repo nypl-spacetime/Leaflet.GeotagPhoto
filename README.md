@@ -22,6 +22,13 @@ Include the following HTML in your page's `<head>` tag:
 <script src="https://unpkg.com/leaflet-geotag-photo/dist/Leaflet.GeotagPhoto.min.js"></script>
 ```
 
+The HTML above links to the latest version of Leaflet.GeotagPhoto. In production, you should link to a specific version, to prevent newer versions breaking your application:
+
+```html
+<link rel="stylesheet" href="https://unpkg.com/leaflet-geotag-photo@0.5.1/dist/Leaflet.GeotagPhoto.css" />
+<script src="https://unpkg.com/leaflet-geotag-photo@0.5.1/dist/Leaflet.GeotagPhoto.min.js"></script>
+```
+
 ## Modes
 
 ### `L.GeotagPhoto.Crosshair`
