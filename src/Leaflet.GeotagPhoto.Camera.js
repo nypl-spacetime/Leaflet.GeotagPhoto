@@ -16,6 +16,12 @@ export default L.FeatureGroup.extend({
     // Whether to show camera control buttons
     control: true,
 
+    // Whether the angle of the field-of-view can be changed with a draggable marker
+    angleMarker: true,
+
+    minAngle: 5,
+    maxAngle: 120,
+
     // Control button images
     controlCameraImg: '../images/camera-icon.svg',
     controlCrosshairImg: '../images/crosshair-icon.svg',
@@ -27,9 +33,15 @@ export default L.FeatureGroup.extend({
     }),
 
     targetIcon: L.icon({
-      iconUrl: '../images/target.svg',
-      iconSize: [180, 32],
-      iconAnchor: [90, 16]
+      iconUrl: '../images/marker.svg',
+      iconSize: [32, 32],
+      iconAnchor: [16, 16]
+    }),
+
+    angleIcon: L.icon({
+      iconUrl: '../images/marker.svg',
+      iconSize: [32, 32],
+      iconAnchor: [16, 16]
     }),
 
     outlineStyle: {
@@ -51,32 +63,27 @@ export default L.FeatureGroup.extend({
   initialize: function (feature, options) {
     L.setOptions(this, options)
 
+    this.options.minAngle = Math.max(this.options.minAngle, 1)
+    this.options.maxAngle = Math.min(this.options.maxAngle, 179)
+
     this._fieldOfView = fromFeature(feature)
     this._angle = this._fieldOfView.properties.angle
 
-    this._targetMarker = null
-    this._cameraMarker = null
-    this._polygon = null
-    this._polyline = null
+    var layers = this._createLayers()
+    L.LayerGroup.prototype.initialize.call(this, layers)
 
-    this._createLayers()
-    L.LayerGroup.prototype.initialize.call(this,
-      [
-        this._targetMarker,
-        this._cameraMarker,
-        this._polyline,
-        this._polygon
-      ]
-    )
+    this.setDraggable(this.options.draggable)
   },
 
   _createLayers: function () {
     this._cameraIcon = this.options.cameraIcon
     this._targetIcon = this.options.targetIcon
+    this._angleIcon = this.options.angleIcon
 
     var pointList = this._getPointList(this._fieldOfView)
     var cameraLatLng = this._getCameraFromPointList(pointList)
     var targetLatLng = this._getTargetFromPointList(pointList)
+    var angleLatLng = this._getAngleFromPointList(pointList)
 
     this._polyline = L.polyline(pointList, this.options.outlineStyle)
     this._polygon = L.polygon(pointList, Object.assign(this.options.fillStyle, {
@@ -104,6 +111,14 @@ export default L.FeatureGroup.extend({
     }).on('drag', this._onMarkerDrag, this)
       .on('dragend', this._onMarkerDragEnd, this)
 
+    this._angleMarker = L.marker(angleLatLng, {
+      icon: this._angleIcon,
+      draggable: this.options.draggable,
+      title: 'Angle',
+      alt: 'Field of view angle'
+    }).on('drag', this._onAngleMarkerDrag, this)
+      .on('dragend', this._onMarkerDragEnd, this)
+
     var boundUpdateMarkerBearings = this._updateMarkerBearings.bind(this)
     var markerSetPos = function (pos) {
       var protoMarkerSetPos = L.Marker.prototype._setPos
@@ -112,6 +127,14 @@ export default L.FeatureGroup.extend({
     }
 
     this._cameraMarker._setPos = this._targetMarker._setPos = markerSetPos
+
+    return [
+      this._targetMarker,
+      this._cameraMarker,
+      this._polyline,
+      this._polygon,
+      this._angleMarker
+    ]
   },
 
   addTo: function (map) {
@@ -126,10 +149,14 @@ export default L.FeatureGroup.extend({
     this._boundOnDocumentKeyDown = this._onDocumentKeyDown.bind(this)
     document.addEventListener('keydown', this._boundOnDocumentKeyDown)
 
+    this.setDraggable(this.options.draggable)
+
     return this
   },
 
   removeFrom: function (map) {
+    this._map = undefined
+
     L.FeatureGroup.prototype.removeFrom.call(this, map)
 
     if (this._boundOnDocumentKeyDown) {
@@ -167,6 +194,10 @@ export default L.FeatureGroup.extend({
     ]
   },
 
+  _getAngleFromPointList: function (pointList) {
+    return pointList[2]
+  },
+
   _addRotateTransform: function (element, rotation) {
     if (!element) {
       return
@@ -188,8 +219,10 @@ export default L.FeatureGroup.extend({
     fieldOfView = fieldOfView || this._fieldOfView
 
     var bearing = fieldOfView.properties.bearing
+    var angle = fieldOfView.properties.angle
     this._addRotateTransform(this._cameraMarker._icon, bearing + 'deg')
     this._addRotateTransform(this._targetMarker._icon, bearing + 'deg')
+    this._addRotateTransform(this._angleMarker._icon, (bearing + angle / 2) + 'deg')
   },
 
   _drawFieldOfView: function (fieldOfView) {
@@ -201,30 +234,52 @@ export default L.FeatureGroup.extend({
   },
 
   _updateFieldOfView: function () {
-    if (this._cameraMarker && this._targetMarker) {
-      var angle = this._angle
-      var cameraLatLng = this._cameraMarker.getLatLng()
-      var targetLatLng = this._targetMarker.getLatLng()
+    var angle = this._angle
+    var cameraLatLng = this._cameraMarker.getLatLng()
+    var targetLatLng = this._targetMarker.getLatLng()
 
-      var cameraTarget = {
-        type: 'Feature',
-        properties: {
-          angle: angle
-        },
-        geometry: {
-          type: 'GeometryCollection',
-          geometries: [
-            this._geoJsonPoint(cameraLatLng),
-            this._geoJsonPoint(targetLatLng)
-          ]
-        }
+    var cameraTarget = {
+      type: 'Feature',
+      properties: {
+        angle: angle
+      },
+      geometry: {
+        type: 'GeometryCollection',
+        geometries: [
+          this._geoJsonPoint(cameraLatLng),
+          this._geoJsonPoint(targetLatLng)
+        ]
       }
-
-      this._fieldOfView = fromFeature(cameraTarget)
-
-      this._updateMarkerBearings(this._fieldOfView)
-      this._drawFieldOfView(this._fieldOfView)
     }
+
+    this._fieldOfView = fromFeature(cameraTarget)
+
+    var angleLatLng = this._getAngleFromPointList(this._getPointList(this._fieldOfView))
+    this._angleMarker.setLatLng(angleLatLng)
+
+    this._updateMarkerBearings(this._fieldOfView)
+    this._drawFieldOfView(this._fieldOfView)
+  },
+
+  _onAngleMarkerDrag: function (evt) {
+    var cameraLatLng = this._cameraMarker.getLatLng()
+    var targetLatLng = this._targetMarker.getLatLng()
+    var angleLatLng = this._angleMarker.getLatLng()
+
+    var points = {
+      type: 'Feature',
+      geometry: {
+        type: 'GeometryCollection',
+        geometries: [
+          this._geoJsonPoint(cameraLatLng),
+          this._geoJsonPoint(targetLatLng),
+          this._geoJsonPoint(angleLatLng)
+        ]
+      }
+    }
+
+    this._fieldOfView = fromFeature(points)
+    this.setAngle(this._fieldOfView.properties.angle)
   },
 
   _onMarkerDrag: function (evt) {
@@ -267,12 +322,33 @@ export default L.FeatureGroup.extend({
     }
   },
 
+  _onAngleMarkerKeyDown: function (evt) {
+    var angleDelta = 2.5
+    if (evt.shiftKey) {
+      angleDelta = angleDelta * 4
+    }
+
+    if (evt.keyCode === 37) {
+      // left
+      this.setAngle(this._angle - angleDelta)
+    } else if (evt.keyCode === 39) {
+      // right
+      this.setAngle(this._angle + angleDelta)
+    }
+  },
+
   _onDocumentKeyDown: function (evt) {
     if (document.activeElement === this._cameraMarker._icon) {
       this._onMarkerKeyDown(this._cameraMarker, evt)
     } else if (document.activeElement === this._targetMarker._icon) {
       this._onMarkerKeyDown(this._targetMarker, evt)
+    } else if (document.activeElement === this._angleMarker._icon) {
+      this._onAngleMarkerKeyDown(evt)
     }
+  },
+
+  _setMarkerVisible: function (marker, visible) {
+    marker._icon.style.visibility = visible ? 'visible' : 'hidden'
   },
 
   _geoJsonPoint: function (latLng) {
@@ -303,6 +379,10 @@ export default L.FeatureGroup.extend({
   },
 
   getCenter: function () {
+    if (!this._map) {
+      return
+    }
+
     return L.latLngBounds([
       this.getCameraLatLng(),
       this.getTargetLatLng()
@@ -334,7 +414,7 @@ export default L.FeatureGroup.extend({
   },
 
   setCameraLatLng: function (latLng) {
-    if (!this._cameraMarker) {
+    if (!this._map) {
       return
     }
 
@@ -344,7 +424,7 @@ export default L.FeatureGroup.extend({
   },
 
   setTargetLatLng: function (latLng) {
-    if (!this._targetMarker) {
+    if (!this._map) {
       return
     }
 
@@ -354,7 +434,7 @@ export default L.FeatureGroup.extend({
   },
 
   setCameraAndTargetLatLng: function (cameraLatLng, targetLatLng) {
-    if (!this._cameraMarker || !this._targetMarker) {
+    if (!this._map) {
       return
     }
 
@@ -374,20 +454,28 @@ export default L.FeatureGroup.extend({
   },
 
   setAngle: function (angle) {
-    this._angle = angle
+    this._angle = Math.max(Math.min(angle, this.options.maxAngle), this.options.minAngle)
     this._updateFieldOfView()
+    this.fire('input')
   },
 
   setDraggable: function (draggable) {
-    if (this._cameraMarker && this._targetMarker) {
-      if (draggable) {
-        this._cameraMarker.dragging.enable()
-        this._targetMarker.dragging.enable()
-      } else {
-        this._cameraMarker.dragging.disable()
-        this._targetMarker.dragging.disable()
-      }
+    if (!this._map) {
+      return
     }
+
+    if (draggable) {
+      this._cameraMarker.dragging.enable()
+      this._targetMarker.dragging.enable()
+      this._angleMarker.dragging.enable()
+    } else {
+      this._cameraMarker.dragging.disable()
+      this._targetMarker.dragging.disable()
+      this._angleMarker.dragging.disable()
+    }
+
+    this._setMarkerVisible(this._targetMarker, draggable)
+    this._setMarkerVisible(this._angleMarker, draggable && this.options.angleMarker)
   }
 
 })

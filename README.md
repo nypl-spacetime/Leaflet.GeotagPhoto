@@ -122,10 +122,14 @@ L.geotagPhoto.camera(points, options).addTo(map)
 #### Options
 
 | Option                | Type      | Default | Description
-|:----------------------|:----------|:--------|:----------------------------------------------------------|
+|:----------------------|:----------|--------:|:----------------------------------------------------------|
 | `draggable`           | `Boolean` | `true`  | Whether the camera is draggable with mouse/touch or not   |
+| `angleMarker`         | `Boolean` | `true`  | Whether the angle of the field-of-view can be changed with a draggable marker
+| `minAngle`            | `Number`  |      5  | Minimum angle of field-of-view
+| `maxAngle`            | `Number`  |     120 | Maximum angle of field-of-view
 | `cameraIcon`          | [`L.Icon`](http://leafletjs.com/reference-1.0.2.html#icon) | See below    | Camera icon
 | `targetIcon`          | [`L.Icon`](http://leafletjs.com/reference-1.0.2.html#icon) | See below    | Target icon
+| `angleIcon`          | [`L.Icon`](http://leafletjs.com/reference-1.0.2.html#icon) | See below    | Angle icon
 | `outlineStyle`        | [`L.Path options`](http://leafletjs.com/reference-1.0.2.html#path-option) | See below | Style of field-of-view triangle's outline
 | `fillStyle`           | [`L.Path options`](http://leafletjs.com/reference-1.0.2.html#path-option) | See below | Style of field-of-view triangle's fill polygon
 | `control`             | `Boolean` | `true`  | Whether to show camera control buttons                    |
@@ -143,9 +147,15 @@ const defaults = {
   }),
 
   targetIcon: L.icon({
-    iconUrl: '../images/target.svg',
-    iconSize: [180, 32],
-    iconAnchor: [90, 16]
+    iconUrl: '../images/marker.svg',
+    iconSize: [32, 32],
+    iconAnchor: [16, 16]
+  }),
+
+  angleIcon: L.icon({
+    iconUrl: '../images/marker.svg',
+    iconSize: [32, 32],
+    iconAnchor: [16, 16]
   }),
 
   outlineStyle: {

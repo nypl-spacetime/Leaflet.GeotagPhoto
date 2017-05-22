@@ -148,7 +148,7 @@
       }
 
       var geotagPhotoCamera = L.geotagPhoto.camera(points, {
-
+        minAngle: 10
       }).addTo(map)
         .on('change', function (event) {
           updateSidebar()
@@ -162,6 +162,10 @@
         var fieldOfView = geotagPhotoCamera.getFieldOfView()
         outputElement.innerHTML = JSON.stringify(fieldOfView, null, 2)
         hljs.highlightBlock(outputElement)
+
+        var angle = fieldOfView.properties.angle
+        slider.value = angle
+        angleText.innerHTML = Math.round(angle) + '°'
       }
 
       var slider = document.getElementById('slider')
