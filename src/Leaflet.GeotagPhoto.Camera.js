@@ -98,6 +98,7 @@ export default L.FeatureGroup.extend({
     this._cameraMarker = L.marker(cameraLatLng, {
       icon: this._cameraIcon,
       draggable: this.options.draggable,
+      zIndexOffset: 300,
       title: 'Camera',
       alt: 'Location of the camera'
     }).on('drag', this._onMarkerDrag, this)
@@ -106,6 +107,7 @@ export default L.FeatureGroup.extend({
     this._targetMarker = L.marker(targetLatLng, {
       icon: this._targetIcon,
       draggable: this.options.draggable,
+      zIndexOffset: 100,
       title: 'Target',
       alt: 'Location of the target'
     }).on('drag', this._onMarkerDrag, this)
@@ -114,6 +116,7 @@ export default L.FeatureGroup.extend({
     this._angleMarker = L.marker(angleLatLng, {
       icon: this._angleIcon,
       draggable: this.options.draggable,
+      zIndexOffset: 200,
       title: 'Angle',
       alt: 'Field of view angle'
     }).on('drag', this._onAngleMarkerDrag, this)
@@ -129,11 +132,11 @@ export default L.FeatureGroup.extend({
     this._cameraMarker._setPos = this._targetMarker._setPos = markerSetPos
 
     return [
-      this._targetMarker,
-      this._cameraMarker,
-      this._polyline,
       this._polygon,
-      this._angleMarker
+      this._polyline,
+      this._targetMarker,
+      this._angleMarker,
+      this._cameraMarker
     ]
   },
 
