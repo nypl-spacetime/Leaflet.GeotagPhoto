@@ -7,7 +7,7 @@ Examples:
 - [Crosshair mode](http://spacetime.nypl.org/Leaflet.GeotagPhoto/examples/crosshair.html)
 - [Camera mode](http://spacetime.nypl.org/Leaflet.GeotagPhoto/examples/camera.html)
 
-[![Screenshot of camera module](images/screenshot.png)](http://spacetime.nypl.org/Leaflet.GeotagPhoto/examples/camera.html)
+[![Screenshot of camera module](screenshots/example.png)](http://spacetime.nypl.org/Leaflet.GeotagPhoto/examples/camera.html)
 
 Leaflet.GeotagPhoto is part of The New York Public Library's [NYC Space/Time Directory](http://spacetime.nypl.org/).
 
@@ -26,7 +26,7 @@ Include the following HTML in your page's `<head>` tag:
 
 ### `L.GeotagPhoto.Crosshair`
 
-![Crosshair mode](images/crosshair.png)
+![Crosshair mode](screenshots/crosshair.jpg)
 
 #### Example
 
@@ -57,7 +57,7 @@ L.geotagPhoto.crosshair().addTo(map)
 
 ### `L.GeotagPhoto.Camera`
 
-![Camera mode](images/camera.png)
+![Camera mode](screenshots/camera.jpg)
 
 #### Example
 
