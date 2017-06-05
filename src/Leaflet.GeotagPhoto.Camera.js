@@ -98,7 +98,7 @@ export default L.FeatureGroup.extend({
     this._cameraMarker = L.marker(cameraLatLng, {
       icon: this._cameraIcon,
       draggable: this.options.draggable,
-      zIndexOffset: 300,
+      zIndexOffset: 600,
       title: 'Camera',
       alt: 'Location of the camera'
     }).on('drag', this._onMarkerDrag, this)
@@ -107,7 +107,7 @@ export default L.FeatureGroup.extend({
     this._targetMarker = L.marker(targetLatLng, {
       icon: this._targetIcon,
       draggable: this.options.draggable,
-      zIndexOffset: 100,
+      zIndexOffset: 200,
       title: 'Target',
       alt: 'Location of the target'
     }).on('drag', this._onMarkerDrag, this)
@@ -116,7 +116,7 @@ export default L.FeatureGroup.extend({
     this._angleMarker = L.marker(angleLatLng, {
       icon: this._angleIcon,
       draggable: this.options.draggable,
-      zIndexOffset: 200,
+      zIndexOffset: 400,
       title: 'Angle',
       alt: 'Field of view angle'
     }).on('drag', this._onAngleMarkerDrag, this)
@@ -153,6 +153,7 @@ export default L.FeatureGroup.extend({
     document.addEventListener('keydown', this._boundOnDocumentKeyDown)
 
     this.setDraggable(this.options.draggable)
+    this._updateMarkerBearings(this._fieldOfView)
 
     return this
   },
@@ -301,7 +302,7 @@ export default L.FeatureGroup.extend({
     marker.setLatLng(latLng)
 
     this._updateFieldOfView()
-    this.fire('input')
+    this.fire('change')
   },
 
   _onMarkerKeyDown: function (marker, evt) {
