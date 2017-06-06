@@ -352,7 +352,7 @@ export default L.FeatureGroup.extend({
   },
 
   _setMarkerVisible: function (marker, visible) {
-    marker._icon.style.visibility = visible ? 'visible' : 'hidden'
+    marker._icon.style.display = visible ? 'inherit' : 'none'
   },
 
   _geoJsonPoint: function (latLng) {
