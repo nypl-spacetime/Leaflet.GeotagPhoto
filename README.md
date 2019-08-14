@@ -60,7 +60,8 @@ L.geotagPhoto.crosshair().addTo(map)
 
 | Option          | Type          | Default                                               | Description
 |:----------------|:--------------|:------------------------------------------------------|:-------------|
-| `crosshairHTML` | `HTML String` | `<img src="../images/crosshair.svg" width="100px" />` | HTML string of crosshair element |
+| `crosshairHTML` | `HTML String` | `<img src="<url>" width="100px" />` | HTML string of crosshair element |
+| `controlCrosshairImg` | `url` | `../images/crosshair.svg` | Crosshair image URL used by the default `crosshairHTML` |
 
 ### `L.GeotagPhoto.Camera`
 
