@@ -2,7 +2,8 @@ import L from 'Leaflet'
 
 export default L.Evented.extend({
   options: {
-    crosshairHTML: '<img alt="Center of the map; crosshair location" title="Crosshair" src="../images/crosshair.svg" width="100px" />'
+    controlCrosshairImg: '../images/crosshair-icon.svg',
+    crosshairHTML: '<img alt="Center of the map; crosshair location" title="Crosshair" src="' + options.controlCrosshairImg + '" width="100px" />'
   },
 
   initialize: function (options) {
