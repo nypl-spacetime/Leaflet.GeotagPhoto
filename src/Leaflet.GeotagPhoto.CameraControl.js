@@ -1,4 +1,4 @@
-import L from 'Leaflet'
+import L from 'leaflet'
 
 export default L.Control.extend({
   options: {
